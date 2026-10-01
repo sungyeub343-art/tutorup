@@ -75,6 +75,7 @@ function layout({ title, description, canonical, body }) {
     "@type": "EducationalOrganization",
     name: "제주 수학과외",
     url: siteUrl,
+    telephone: "010-2928-3614",
     areaServed: "제주특별자치도",
     description
   };
@@ -103,9 +104,9 @@ function layout({ title, description, canonical, body }) {
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로가기</a>
-  <header class="site-header"><div class="wrap nav-inner"><a class="brand" href="/"><span>JEJU</span><strong>제주 수학과외</strong></a><nav aria-label="주요 메뉴"><a href="/#method">수업 방식</a><a href="/#grades">학년별 수업</a><a href="/#areas">지역 찾기</a></nav><a class="nav-cta" href="/#consult">상담 안내</a></div></header>
+  <header class="site-header"><div class="wrap nav-inner"><a class="brand" href="/"><span>JEJU</span><strong>제주 수학과외</strong></a><nav aria-label="주요 메뉴"><a href="/#method">수업 방식</a><a href="/#grades">학년별 수업</a><a href="/#areas">지역 찾기</a></nav><a class="nav-cta" href="tel:01029283614" aria-label="010-2928-3614로 전화 상담">전화 상담</a></div></header>
   ${body}
-  <footer><div class="wrap footer-inner"><a class="brand footer-brand" href="/"><span>JEJU</span><strong>제주 수학과외</strong></a><p>학생의 이해에서 시작하는 1:1 맞춤 수업</p><p>© 2026 제주 수학과외</p></div></footer>
+  <footer><div class="wrap footer-inner"><a class="brand footer-brand" href="/"><span>JEJU</span><strong>제주 수학과외</strong></a><p>학생의 이해에서 시작하는 1:1 맞춤 수업</p><p><a class="footer-phone" href="tel:01029283614">상담 010-2928-3614</a><br>© 2026 제주 수학과외</p></div></footer>
 </body>
 </html>`;
 }
@@ -119,7 +120,7 @@ function homePage() {
     <section class="grade-section" id="grades"><div class="wrap"><div class="section-heading light"><div><p class="kicker">02 · GRADE TRANSITION</p><h2>새 학년의 시작,<br>연결이 중요합니다</h2></div><p>무리한 선행보다 다음 과정에 필요한 이전 개념을 정확하게 이어 붙이는 일이 먼저입니다.</p></div><div class="grade-grid">${gradeCards}</div></div></section>
     <section class="study-scene"><div class="study-photo"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1400&q=85" alt="수학 공식과 도형이 적힌 학습 공간" loading="lazy"></div><div><p class="kicker">A ROUTINE THAT LASTS</p><h2>수업이 없는 날에도<br>스스로 이어가도록</h2><p>과외 시간에만 풀 수 있는 문제는 오래 남지 않습니다. 문제를 읽고, 조건을 표시하고, 풀이를 검토하는 루틴을 반복해 혼자 공부할 때의 기준을 만듭니다.</p><ul><li>학교별 시험 범위와 일정 반영</li><li>매 수업 오답 원인 기록</li><li>개인별 과제량과 복습 주기 조정</li></ul></div></section>
     <section class="areas" id="areas"><div class="wrap"><div class="section-heading"><div><p class="kicker">03 · LOCAL CLASS</p><h2>제주 우리 동네<br>수학과외 찾기</h2></div><p>제주시와 서귀포시, 각 읍·면·동의 지역별 수업 안내를 확인하세요. 가까운 생활권을 기준으로 꾸준히 이어갈 수 있는 학습 계획을 제안합니다.</p></div><div class="city-grid">${cityLinks}</div>${regionGroups}</div></section>
-    <section class="consult" id="consult"><div class="wrap consult-inner"><div><p class="kicker">04 · CONSULTATION</p><h2>현재 고민에서<br>상담을 시작합니다</h2></div><div><p>학생의 학년, 거주 지역, 최근 성적과 목표를 기준으로 필요한 수업 방향을 정리합니다. 상담 연락처는 운영 정보가 확정되는 대로 이 영역에 연결할 수 있습니다.</p><a class="button button-dark" href="#areas">지역별 안내 보기 <span>→</span></a></div></div></section>
+    <section class="consult" id="consult"><div class="wrap consult-inner"><div><p class="kicker">04 · CONSULTATION</p><h2>현재 고민에서<br>상담을 시작합니다</h2></div><div><p>학생의 학년, 거주 지역, 최근 성적과 목표를 기준으로 필요한 수업 방향을 정리합니다. 아래 번호를 누르면 바로 전화로 상담할 수 있습니다.</p><a class="button button-dark" href="tel:01029283614" aria-label="010-2928-3614로 전화 상담">010-2928-3614 <span>☎</span></a></div></div></section>
   </main>`;
   return layout({ title: "제주 수학과외 | 예비중·예비고 1:1 맞춤 수업", description: "제주특별자치도 초중고 1:1 수학과외. 예비중1, 예비중2, 예비중3, 예비고1, 예비고2, 예비고3 학생별 내신·선행·수능 맞춤 수업.", canonical: `${siteUrl}/`, body });
 }
@@ -142,7 +143,7 @@ function areaPage(area) {
     ${regionDirectory}
     <section class="grade-section local-grades" id="grades"><div class="wrap"><div class="section-heading light"><div><p class="kicker">GRADE TRANSITION</p><h2>${areaName} 학년별<br>수학 학습 안내</h2></div><p>학년 전환기의 복습과 선행을 학생별 이해도에 맞춰 조정합니다.</p></div><div class="grade-grid">${gradeCards}</div></div></section>
     <section class="local-details"><div class="wrap detail-grid"><article><p class="kicker">LESSON FOCUS</p><h2>${areaName} 학생에게 맞는<br>현실적인 계획</h2><p>학교별 시험 일정과 학생의 생활 패턴을 고려해 무리하지 않고 이어갈 수 있는 주간 계획을 세웁니다. 대면 수업 가능 여부와 시간은 세부 위치와 희망 일정에 따라 상담 후 안내합니다.</p></article><article><p class="kicker">NEARBY AREAS</p><h3>${isCity ? `${areaName} 세부 지역` : `${cityName} 다른 지역`} 수학과외</h3><div class="nearby-links">${nearbyLinks}</div></article></div></section>
-    <section class="local-cta"><div class="wrap"><div><p class="kicker">CONSULTATION</p><h2>${areaName} 수학과외 상담</h2></div><a class="button button-citrus" href="/#consult">상담 안내 확인 <span>→</span></a></div></section>
+    <section class="local-cta"><div class="wrap"><div><p class="kicker">CONSULTATION</p><h2>${areaName} 수학과외 상담</h2></div><a class="button button-citrus" href="tel:01029283614" aria-label="010-2928-3614로 전화 상담">010-2928-3614 <span>☎</span></a></div></section>
   </main>`;
   return layout({ title: `${areaName} 수학과외 | 제주 예비중·예비고 맞춤 수업`, description: `제주 ${areaName} 초중고 1:1 수학과외. 예비중1, 예비중2, 예비중3, 예비고1, 예비고2, 예비고3 학생의 내신·선행·수능 맞춤 학습.`, canonical: `${siteUrl}${areaPath(area)}`, body });
 }

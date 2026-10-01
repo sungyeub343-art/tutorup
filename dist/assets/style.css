@@ -92,6 +92,7 @@ footer { padding: 3rem 0; color: rgba(255,255,255,.66); background: #101b19; fon
 .footer-inner { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end; }
 .footer-brand { color: white; }
 .footer-inner p { margin: 0; }
+.footer-phone { color: white; font-weight: 600; }
 .local-hero { padding: 9rem 0 7rem; color: white; background: var(--forest); }
 .breadcrumbs { display: flex; flex-wrap: wrap; gap: .7rem; margin: 1rem 0 4rem; color: rgba(255,255,255,.58); font-size: .82rem; }
 .local-hero h1 { max-width: 980px; font-size: clamp(3.7rem, 8vw, 7.3rem); }
