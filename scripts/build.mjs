@@ -87,6 +87,7 @@ function layout({ title, description, canonical, body }) {
   <title>${title}</title>
   <meta name="description" content="${description}">
   <meta name="naver-site-verification" content="044544c41c6aa3979986fd9912b17b85cd82adc5">
+  <meta name="google-site-verification" content="WXFdoOwFb2R59oiI-PXgL5uYDhWaYWBE7siZCPZX4oM">
   <meta name="theme-color" content="#183c35">
   <link rel="canonical" href="${canonical}">
   <meta property="og:type" content="website">
