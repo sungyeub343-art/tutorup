@@ -36,9 +36,11 @@ img { display: block; width: 100%; }
 .eyebrow { color: #ffe09a; }
 .hero h1, .local-hero h1, .not-found h1 { margin: 0; font-family: "Gowun Batang", serif; font-size: clamp(4.2rem, 9vw, 8.5rem); font-weight: 700; line-height: .96; letter-spacing: 0; }
 .hero-copy { max-width: 610px; margin: 2rem 0; color: rgba(255,255,255,.86); font-size: clamp(1.05rem, 2vw, 1.3rem); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
 .button { min-height: 52px; display: inline-flex; align-items: center; justify-content: space-between; gap: 2.5rem; padding: .75rem 1.25rem; border: 0; font-weight: 700; }
 .button-citrus { color: var(--basalt); background: var(--citrus); }
 .button-dark { color: white; background: var(--basalt); }
+.button-ghost { color: white; background: rgba(9, 31, 27, .46); border: 1px solid rgba(255,255,255,.72); }
 .hero-facts { position: absolute; right: max(24px, calc((100% - var(--max))/2)); bottom: 30px; z-index: 2; display: flex; gap: 2rem; font-size: .8rem; }
 .hero-facts span { padding-left: 1rem; border-left: 2px solid var(--citrus); }
 .intro, .areas, .local-intro, .local-details, .subareas { padding: 8rem 0; }
@@ -143,6 +145,7 @@ footer { padding: 3rem 0; color: rgba(255,255,255,.66); background: #101b19; fon
   .hero { min-height: 735px; }
   .hero-shade { background: rgba(9, 31, 27, .74); }
   .hero h1 { font-size: 4rem; }
+  .hero-actions { align-items: flex-start; flex-direction: column; }
   .hero-facts { left: 16px; right: 16px; gap: .65rem; }
   .hero-facts span { width: 100%; }
   .intro, .areas, .local-intro, .local-details, .grade-section { padding: 5rem 0; }
