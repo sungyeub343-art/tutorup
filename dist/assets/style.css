@@ -25,7 +25,7 @@ img { display: block; width: 100%; }
 .brand { display: inline-flex; align-items: center; gap: .75rem; }
 .brand span { padding: .26rem .42rem; color: var(--basalt); background: var(--citrus); font-family: Georgia, serif; font-size: .62rem; font-weight: 700; letter-spacing: .08em; }
 .brand strong { font-size: .95rem; }
-.site-header nav { display: flex; gap: 2.2rem; font-size: .88rem; }
+.site-header nav { display: flex; gap: 1.8rem; font-size: .88rem; }
 .nav-cta { padding: .62rem 1rem; border: 1px solid rgba(255,255,255,.7); font-size: .86rem; font-weight: 600; }
 .hero { position: relative; min-height: min(860px, 94vh); overflow: hidden; color: white; background: var(--forest); }
 .hero > img, .hero-shade { position: absolute; inset: 0; height: 100%; object-fit: cover; }
@@ -42,7 +42,8 @@ img { display: block; width: 100%; }
 .button-dark { color: white; background: var(--basalt); }
 .button-ghost { color: white; background: rgba(9, 31, 27, .46); border: 1px solid rgba(255,255,255,.72); }
 .hero-facts { position: absolute; right: max(24px, calc((100% - var(--max))/2)); bottom: 30px; z-index: 2; display: flex; gap: 2rem; font-size: .8rem; }
-.hero-facts span { padding-left: 1rem; border-left: 2px solid var(--citrus); }
+.hero-facts span, .hero-facts a { padding-left: 1rem; border-left: 2px solid var(--citrus); }
+.hero-facts a:hover { color: var(--citrus); }
 .intro, .areas, .local-intro, .local-details, .subareas { padding: 8rem 0; }
 .section-heading { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: end; margin-bottom: 4.5rem; }
 .section-heading > p, .section-heading > div:last-child { max-width: 570px; margin: 0; color: var(--muted); font-size: 1.04rem; }
@@ -86,6 +87,37 @@ h2 { margin: 0; font-family: "Gowun Batang", serif; font-size: clamp(2.5rem, 5vw
 .region-grid strong { margin-top: .35rem; }
 .region-grid a > span { position: absolute; right: 1rem; bottom: 1rem; }
 .region-grid a:hover, .region-grid a:focus-visible { color: var(--basalt); background: var(--citrus); }
+.levels { padding: 8rem 0; background: var(--foam); }
+.level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.level-card { display: flex; flex-direction: column; padding: 2rem; background: var(--white); border: 1px solid var(--line); scroll-margin-top: 1rem; transition: background .2s; }
+.level-card small { color: var(--coral); font-size: .7rem; font-weight: 700; letter-spacing: .12em; }
+.level-card h3 { margin: 1.3rem 0 .8rem; font-family: "Gowun Batang", serif; font-size: 1.75rem; line-height: 1.3; }
+.level-card > p { margin: 0 0 1.4rem; color: var(--muted); font-size: .92rem; }
+.level-card ul { margin: 0 0 1.4rem; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.level-card li { display: flex; flex-direction: column; padding: .65rem 0; border-bottom: 1px solid var(--line); font-size: .86rem; }
+.level-card li span { color: var(--muted); }
+.level-card > .grade-tags { font-size: .84rem; }
+.level-card .grade-tags b { display: block; color: var(--basalt); }
+.level-card .more { margin-top: auto; font-weight: 700; }
+a.level-card:hover, a.level-card:focus-visible { background: var(--citrus); }
+a.level-card:hover > p, a.level-card:hover li span, a.level-card:focus-visible > p { color: var(--basalt); }
+.topic-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.topic-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.topic-grid article { padding: 2rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.topic-grid b { color: var(--coral); font-size: .75rem; }
+.topic-grid h3 { margin: 2rem 0 .8rem; font-size: 1.2rem; }
+.topic-grid p { margin: 0; color: var(--muted); font-size: .94rem; }
+.school-note { max-width: 860px; margin: 3rem 0 0; color: var(--muted); }
+.school-note strong { display: block; margin-bottom: .4rem; color: var(--basalt); }
+.grade-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.faq { padding: 8rem 0; }
+.faq-list { border-top: 1px solid var(--line); }
+.faq-list details { border-bottom: 1px solid var(--line); }
+.faq-list summary { position: relative; padding: 1.4rem 3rem 1.4rem 0; font-size: 1.05rem; font-weight: 700; cursor: pointer; list-style: none; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; position: absolute; top: 1.15rem; right: .2rem; color: var(--coral); font-size: 1.5rem; font-weight: 400; }
+.faq-list details[open] summary::after { content: "−"; }
+.faq-list details p { max-width: 760px; margin: 0 0 1.5rem; color: var(--muted); }
 .consult { padding: 7rem 0; background: var(--citrus); }
 .consult-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
 .consult-inner p { max-width: 560px; margin: 0 0 1.8rem; }
@@ -94,6 +126,9 @@ footer { padding: 3rem 0; color: rgba(255,255,255,.66); background: #101b19; fon
 .footer-inner { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end; }
 .footer-brand { color: white; }
 .footer-inner p { margin: 0; }
+.footer-inner > div > p { margin-top: .9rem; }
+.footer-links { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; margin-top: 1rem; }
+.footer-links a:hover { color: white; }
 .footer-phone { color: white; font-weight: 600; }
 .local-hero { padding: 9rem 0 7rem; color: white; background: var(--forest); }
 .breadcrumbs { display: flex; flex-wrap: wrap; gap: .7rem; margin: 1rem 0 4rem; color: rgba(255,255,255,.58); font-size: .82rem; }
@@ -134,6 +169,8 @@ footer { padding: 3rem 0; color: rgba(255,255,255,.66); background: #101b19; fon
   .study-scene { grid-template-columns: 1fr; }
   .study-photo { min-height: 420px; }
   .region-grid { grid-template-columns: repeat(3, 1fr); }
+  .level-grid { grid-template-columns: 1fr; }
+  .topic-grid.cols-3 { grid-template-columns: 1fr 1fr; }
   .consult-inner, .detail-grid { grid-template-columns: 1fr; gap: 3rem; }
 }
 
@@ -148,7 +185,9 @@ footer { padding: 3rem 0; color: rgba(255,255,255,.66); background: #101b19; fon
   .hero-actions { align-items: flex-start; flex-direction: column; }
   .hero-facts { left: 16px; right: 16px; gap: .65rem; }
   .hero-facts span { width: 100%; }
-  .intro, .areas, .local-intro, .local-details, .grade-section { padding: 5rem 0; }
+  .intro, .areas, .local-intro, .local-details, .grade-section, .levels, .faq { padding: 5rem 0; }
+  .topic-grid, .topic-grid.cols-3, .grade-grid.cols-2 { grid-template-columns: 1fr; }
+  .topic-grid article, .level-card { padding: 1.5rem; }
   .method-grid, .grade-grid { grid-template-columns: 1fr; }
   .method-grid article { min-height: 205px; padding: 1.4rem 0; border-right: 0; border-top: 1px solid var(--line); }
   .method-grid article:first-child { border-top: 0; }

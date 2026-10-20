@@ -4,23 +4,44 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
-const requiredKeywords = ["예비중1", "예비중2", "예비중3", "예비고1", "예비고2", "예비고3"];
+const gradeKeywords = ["예비중1", "예비중2", "예비중3", "예비고1", "예비고2", "예비고3"];
+const levelKeywords = {
+  elementary: ["초등 수학수업", "초등 수학공부", "초등 기초수학"],
+  middle: ["중등 수학수업", "중등 수학공부", "중등 기초수학", "중등 수학내신"],
+  high: ["고등 수학수업", "고등 수학공부", "고등 기초수학", "고등 수학내신", "고등 수능대비", "고등 수능수학"]
+};
+const allLevelKeywords = Object.values(levelKeywords).flat();
 const areaDirectories = await readdir(path.join(dist, "areas"), { withFileTypes: true });
-const htmlFiles = [path.join(dist, "index.html"), ...areaDirectories.filter(entry => entry.isDirectory()).map(entry => path.join(dist, "areas", entry.name, "index.html"))];
+const areaFiles = areaDirectories.filter(entry => entry.isDirectory()).map(entry => path.join(dist, "areas", entry.name, "index.html"));
+const levelFiles = Object.keys(levelKeywords).map(slug => path.join(dist, slug, "index.html"));
+const htmlFiles = [path.join(dist, "index.html"), ...levelFiles, ...areaFiles];
 
-if (htmlFiles.length !== 46) throw new Error(`Expected 46 index pages, found ${htmlFiles.length}`);
+if (htmlFiles.length !== 49) throw new Error(`Expected 49 index pages, found ${htmlFiles.length}`);
+const titles = new Set();
+const descriptions = new Set();
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
-  for (const keyword of requiredKeywords) {
-    if (!html.includes(keyword)) throw new Error(`${path.relative(root, file)} is missing ${keyword}`);
+  const name = path.relative(root, file);
+  const level = Object.keys(levelKeywords).find(slug => file === path.join(dist, slug, "index.html"));
+  const required = level ? ["수학과외", ...levelKeywords[level]] : ["수학과외", ...gradeKeywords, ...allLevelKeywords];
+  for (const keyword of required) {
+    if (!html.includes(keyword)) throw new Error(`${name} is missing ${keyword}`);
   }
-  if (!html.includes('<link rel="canonical" href="https://tutorup.kr')) throw new Error(`${path.relative(root, file)} has no canonical URL`);
-  if (!html.includes('application/ld+json')) throw new Error(`${path.relative(root, file)} has no structured data`);
+  if (!html.includes('<link rel="canonical" href="https://tutorup.kr')) throw new Error(`${name} has no canonical URL`);
+  if (!html.includes('"@type":"FAQPage"') || !html.includes('"@type":"BreadcrumbList"')) throw new Error(`${name} is missing structured data`);
+  const title = html.match(/<title>(.*?)<\/title>/)?.[1];
+  const description = html.match(/<meta name="description" content="(.*?)">/)?.[1];
+  if (!title || titles.has(title)) throw new Error(`${name} has a missing or duplicate title`);
+  if (!description || descriptions.has(description)) throw new Error(`${name} has a missing or duplicate description`);
+  titles.add(title);
+  descriptions.add(description);
 }
 
-for (const file of ["CNAME", "robots.txt", "sitemap.xml", ".nojekyll", "404.html", "assets/style.css"]) {
+for (const file of ["CNAME", "robots.txt", "sitemap.xml", "rss.xml", ".nojekyll", "404.html", "assets/style.css", "favicon.ico", "favicon.svg", "apple-touch-icon.png"]) {
   await access(path.join(dist, file));
 }
 const sitemap = await readFile(path.join(dist, "sitemap.xml"), "utf8");
-if ((sitemap.match(/<url>/g) || []).length !== 46) throw new Error("Sitemap URL count does not match page count");
+if ((sitemap.match(/<url>/g) || []).length !== 49) throw new Error("Sitemap URL count does not match page count");
+const rss = await readFile(path.join(dist, "rss.xml"), "utf8");
+if ((rss.match(/<item>/g) || []).length !== 49) throw new Error("RSS item count does not match page count");
 console.log(`Checked ${htmlFiles.length} pages, metadata, keywords, and deployment files`);
