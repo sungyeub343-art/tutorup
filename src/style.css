@@ -107,8 +107,16 @@ a.level-card:hover > p, a.level-card:hover li span, a.level-card:focus-visible >
 .topic-grid b { color: var(--coral); font-size: .75rem; }
 .topic-grid h3 { margin: 2rem 0 .8rem; font-size: 1.2rem; }
 .topic-grid p { margin: 0; color: var(--muted); font-size: .94rem; }
-.school-note { max-width: 860px; margin: 3rem 0 0; color: var(--muted); }
-.school-note strong { display: block; margin-bottom: .4rem; color: var(--basalt); }
+.schools { padding: 8rem 0; border-top: 1px solid var(--line); }
+.school-city + .school-city { margin-top: 4rem; }
+.region-title a:hover { color: var(--coral); }
+.school-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.school-grid article { padding: 1.6rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.school-grid h3 { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 1rem; font-size: 1.1rem; }
+.school-grid small { color: var(--coral); font-size: .75rem; font-weight: 700; }
+.school-grid p { margin: 0 0 .7rem; color: var(--muted); font-size: .9rem; }
+.school-grid p a { margin-right: .5rem; color: var(--basalt); font-weight: 700; }
+.school-grid p a:hover { color: var(--coral); }
 .grade-grid.cols-2 { grid-template-columns: 1fr 1fr; }
 .faq { padding: 8rem 0; }
 .faq-list { border-top: 1px solid var(--line); }
@@ -185,7 +193,7 @@ footer { padding: 3rem 0; color: rgba(255,255,255,.66); background: #101b19; fon
   .hero-actions { align-items: flex-start; flex-direction: column; }
   .hero-facts { left: 16px; right: 16px; gap: .65rem; }
   .hero-facts span { width: 100%; }
-  .intro, .areas, .local-intro, .local-details, .grade-section, .levels, .faq { padding: 5rem 0; }
+  .intro, .areas, .local-intro, .local-details, .grade-section, .levels, .faq, .schools { padding: 5rem 0; }
   .topic-grid, .topic-grid.cols-3, .grade-grid.cols-2 { grid-template-columns: 1fr; }
   .topic-grid article, .level-card { padding: 1.5rem; }
   .method-grid, .grade-grid { grid-template-columns: 1fr; }

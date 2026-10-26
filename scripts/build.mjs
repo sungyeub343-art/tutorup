@@ -147,7 +147,6 @@ const levels = [
       ["제주 고등 기초수학", "고등 수학이 어려운 원인은 중학 과정의 인수분해, 이차함수, 방정식에 있는 경우가 많습니다. 필요한 중등 개념을 짧게 복습하며 현재 진도를 따라갑니다."],
       ["제주 고등 수학공부법", "개념 정리, 오답 관리, 주간 복습 주기를 학생 일정에 맞게 설계합니다. 내신 기간과 모의고사 일정을 함께 고려합니다."]
     ],
-    schools: "제주제일고·오현고·대기고·남녕고·제주여고·신성여고·제주중앙여고·사대부고 등 제주시 고등학교와 서귀포고·남주고·서귀포여고·삼성여고·대정고·표선고·성산고 등 서귀포시 고등학교의 시험 범위와 부교재를 학교별로 반영해 수학내신을 준비합니다.",
     grades: [
       ["고1", "공통수학1(다항식, 방정식과 부등식, 경우의 수, 행렬)과 공통수학2(도형의 방정식, 집합과 명제, 함수와 그래프)를 다룹니다. 첫 고등 내신에서 기준을 잡는 것이 중요합니다."],
       ["고2", "대수, 미적분Ⅰ, 확률과 통계 등 학교 선택 과목에 맞춰 내신을 준비하고 수능 출제 범위와 연결해 공부합니다."],
@@ -169,6 +168,62 @@ const esc = text => String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").re
 const pointList = level => `<ul>${level.points.map(([keyword, text]) => `<li><b>${level.key} ${keyword}</b><span>${text}</span></li>`).join("")}</ul>`;
 const faqSection = (heading, faqs) => `<section class="faq" id="faq"><div class="wrap"><div class="section-heading compact"><div><p class="kicker">FAQ</p><h2>${heading}</h2></div><p>상담 전에 자주 묻는 질문을 정리했습니다.</p></div><div class="faq-list">${faqs.map(([question, answer]) => `<details><summary>${question}</summary><p>${answer}</p></details>`).join("")}</div></div></section>`;
 const pages = [];
+
+// 학교 데이터(src/schools.json, scripts/import-schools.py로 생성)의 법정동·읍면을 사이트의 지역 페이지에 연결합니다.
+// 법정동 하나가 여러 행정동에 걸치면 해당 페이지마다 인근 학교로 함께 보여 줍니다.
+const schools = JSON.parse(await readFile(path.join(root, "src", "schools.json"), "utf8"));
+const seogwipoDowntown = ["songsan", "jeongbang", "jungang", "cheonji"];
+const townAreas = {
+  제주시: {
+    일도일동: ["ildo-1"], 일도이동: ["ildo-2"], 이도일동: ["ido-1"], 이도이동: ["ido-2"], 도남동: ["ido-2"],
+    삼도일동: ["samdo-1"], 삼도이동: ["samdo-1", "samdo-2"], 용담일동: ["yongdam-1"], 용담이동: ["yongdam-1", "yongdam-2"], 용담삼동: ["yongdam-2"],
+    건입동: ["geonip"], 화북일동: ["hwabuk"], 화북이동: ["hwabuk"], 삼양일동: ["samyang"], 삼양이동: ["samyang"], 삼양삼동: ["samyang"], 도련일동: ["samyang"], 도련이동: ["samyang"],
+    봉개동: ["bonggae"], 회천동: ["bonggae"], 용강동: ["bonggae"], 아라일동: ["ara"], 아라이동: ["ara"], 영평동: ["ara"], 월평동: ["ara"], 오등동: ["ara"],
+    오라일동: ["ora"], 오라이동: ["ora"], 오라삼동: ["ora"], 연동: ["yeon"], 노형동: ["nohyung"], 해안동: ["nohyung"],
+    외도일동: ["oedo"], 외도이동: ["oedo"], 내도동: ["oedo"], 도평동: ["oedo"], 이호일동: ["iho"], 이호이동: ["iho"], 도두일동: ["dodu"], 도두이동: ["dodu"]
+  },
+  서귀포시: {
+    서귀동: seogwipoDowntown, 보목동: ["songsan"], 토평동: ["yeongcheon"], 상효동: ["yeongcheon"], 하효동: ["hyodon"], 신효동: ["hyodon"],
+    동홍동: ["donghong"], 서홍동: ["seohong"], 법환동: ["daeryun"], 서호동: ["daeryun"], 호근동: ["daeryun"],
+    강정동: ["daecheon"], 도순동: ["daecheon"], 영남동: ["daecheon"], 월평동: ["daecheon"],
+    중문동: ["jungmun"], 대포동: ["jungmun"], 하원동: ["jungmun"], 회수동: ["jungmun"], 상예동: ["yerae"], 하예동: ["yerae"], 색달동: ["yerae"]
+  }
+};
+// 학교가 없는 동은 가까운 동의 학교를 인근 학교로 보여 줍니다.
+const nearbySchoolAreas = { "ildo-1": ["ildo-2", "ido-1"], iho: ["dodu", "oedo"] };
+for (const school of schools) {
+  school.areas = townAreas[school.city]?.[school.town] ?? regions.filter(region => region.city === school.city && region.name === school.town).map(region => region.slug);
+  if (!school.areas.length) throw new Error(`${school.name}(${school.city} ${school.town})의 지역 페이지를 찾을 수 없습니다`);
+}
+const schoolLevels = [["초등", "초등학교"], ["중등", "중학교"], ["고등", "고등학교"], ["국제", "국제학교"]];
+const findArea = slug => regions.find(region => region.slug === slug);
+function schoolsFor(area) {
+  if (area.type === "시") return { list: schools.filter(school => school.city === area.name), nearby: false };
+  const list = schools.filter(school => school.areas.includes(area.slug));
+  return list.length ? { list, nearby: false } : { list: schools.filter(school => school.areas.some(slug => nearbySchoolAreas[area.slug]?.includes(slug))), nearby: true };
+}
+function schoolGrid(list, grouped) {
+  return `<div class="school-grid">${schoolLevels.map(([level, label]) => {
+    const items = list.filter(school => school.level === level);
+    if (!items.length) return "";
+    const towns = [...new Set(items.map(school => school.town))];
+    const content = grouped
+      ? towns.map(town => { const inTown = items.filter(school => school.town === town); return `<p><a href="${areaPath(findArea(inTown[0].areas[0]))}">${town}</a>${inTown.map(school => school.name).join(" · ")}</p>`; }).join("")
+      : `<p>${items.map(school => school.name).join(" · ")}</p>`;
+    return `<article><h3>${label}<small>${items.length}개교</small></h3>${content}</article>`;
+  }).join("")}</div>`;
+}
+const citySchoolBlocks = list => cities.map(city => { const inCity = list.filter(school => school.city === city.name); return inCity.length ? `<div class="school-city"><div class="region-title"><p><a href="${areaPath(city)}">${city.name}</a></p><span>${inCity.length}개교</span></div>${schoolGrid(inCity, true)}</div>` : ""; }).join("");
+function schoolSentence(list) {
+  const sample = level => list.filter(school => school.level === level).slice(0, 2).map(school => school.name).join("·");
+  const parts = [
+    sample("초등") && `${sample("초등")} 등 초등학생은 학교 진도에 맞춘 기초수학`,
+    sample("중등") && `${sample("중등")} 등 중학생은 학교별 수학내신과 서술형`,
+    sample("고등") && `${sample("고등")} 등 고등학생은 수학내신과 수능수학`
+  ].filter(Boolean);
+  const international = list.some(school => school.level === "국제") ? " 국제학교 학생은 학교 커리큘럼과 진도를 확인해 수업 방향을 정합니다." : "";
+  return `${parts.join(", ")}을 중심으로 준비합니다. 학교마다 다른 시험 범위와 부교재를 확인해 수업에 반영합니다.${international}`;
+}
 
 function layout({ title, description, canonical, body, breadcrumbs = [], faqs = [], noindex = false }) {
   const graph = [
@@ -246,6 +301,7 @@ function homePage() {
     <section class="grade-section" id="grades"><div class="wrap"><div class="section-heading light"><div><p class="kicker">03 · GRADE TRANSITION</p><h2>새 학년의 시작,<br>연결이 중요합니다</h2></div><p>무리한 선행보다 다음 과정에 필요한 이전 개념을 정확하게 이어 붙이는 일이 먼저입니다.</p></div><div class="grade-grid">${gradeCards}</div></div></section>
     <section class="study-scene"><div class="study-photo"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1400&q=85" alt="수학 공식과 도형이 적힌 학습 공간" loading="lazy"></div><div><p class="kicker">A ROUTINE THAT LASTS</p><h2>수업이 없는 날에도<br>스스로 이어가도록</h2><p>과외 시간에만 풀 수 있는 문제는 오래 남지 않습니다. 문제를 읽고, 조건을 표시하고, 풀이를 검토하는 루틴을 반복해 혼자 수학공부할 때의 기준을 만듭니다.</p><ul><li>학교별 시험 범위와 일정 반영</li><li>매 수업 오답 원인 기록</li><li>개인별 과제량과 복습 주기 조정</li></ul></div></section>
     <section class="areas" id="areas"><div class="wrap"><div class="section-heading"><div><p class="kicker">04 · LOCAL CLASS</p><h2>제주 우리 동네<br>수학과외 찾기</h2></div><p>제주시와 서귀포시, 각 읍·면·동의 지역별 수업 안내를 확인하세요. 가까운 생활권을 기준으로 꾸준히 이어갈 수 있는 학습 계획을 제안합니다.</p></div><div class="city-grid">${cityLinks}</div>${regionGroups}</div></section>
+    <section class="schools" id="schools"><div class="wrap"><div class="section-heading"><div><p class="kicker">05 · SCHOOLS</p><h2>제주 학교별<br>수학 내신 대비</h2></div><p>제주 초등학교 ${schools.filter(school => school.level === "초등").length}곳, 중학교 ${schools.filter(school => school.level === "중등").length}곳, 고등학교 ${schools.filter(school => school.level === "고등").length}곳의 학교별 진도와 시험 범위를 반영합니다. 학교 이름 옆 지역을 누르면 동네별 수업 안내로 이동합니다.</p></div>${citySchoolBlocks(schools)}</div></section>
     ${faqSection("제주 수학과외<br>자주 묻는 질문", faqs)}
     <section class="consult" id="consult"><div class="wrap consult-inner"><div><p class="kicker">CONSULTATION</p><h2>현재 고민에서<br>상담을 시작합니다</h2></div><div><p>학생의 학년, 거주 지역, 최근 성적과 목표를 기준으로 필요한 수업 방향을 정리합니다. 아래 번호를 누르면 바로 전화로 상담할 수 있습니다.</p><a class="button button-dark" href="${phoneLink}" aria-label="${phone}로 전화 상담">${phone} <span>☎</span></a></div></div></section>
   </main>`;
@@ -264,9 +320,10 @@ function levelPage(level) {
   const otherLevels = levels.filter(other => other !== level).map(other => `<a href="${levelPath(other)}">제주 ${other.key} 수학과외<span>→</span></a>`).join("");
   const body = `<main id="main" class="local-page">
     <section class="local-hero"><div class="wrap"><nav class="breadcrumbs" aria-label="현재 위치"><a href="/">제주</a><span>/</span><strong>${level.key} 수학</strong></nav><p class="eyebrow">JEJU · ${level.eyebrow}</p><h1>제주<br>${level.key} 수학</h1><p>${level.lead}</p></div></section>
-    <section class="intro"><div class="wrap"><div class="section-heading"><div><p class="kicker">LESSON FOCUS</p><h2>제주 ${level.key} 수학과외,<br>이렇게 수업합니다</h2></div><p>${level.summary} 학생마다 막히는 지점이 다르기 때문에 첫 수업에서 최근 시험지와 교재를 함께 보고 수업 순서를 정합니다.</p></div><div class="topic-grid${level.topics.length > 4 ? " cols-3" : ""}">${level.topics.map(([heading, text], index) => `<article><b>0${index + 1}</b><h3>${heading}</h3><p>${text}</p></article>`).join("")}</div>${level.schools ? `<p class="school-note"><strong>학교별 내신 반영</strong>${level.schools}</p>` : ""}</div></section>
+    <section class="intro"><div class="wrap"><div class="section-heading"><div><p class="kicker">LESSON FOCUS</p><h2>제주 ${level.key} 수학과외,<br>이렇게 수업합니다</h2></div><p>${level.summary} 학생마다 막히는 지점이 다르기 때문에 첫 수업에서 최근 시험지와 교재를 함께 보고 수업 순서를 정합니다.</p></div><div class="topic-grid${level.topics.length > 4 ? " cols-3" : ""}">${level.topics.map(([heading, text], index) => `<article><b>0${index + 1}</b><h3>${heading}</h3><p>${text}</p></article>`).join("")}</div></div></section>
     <section class="grade-section"><div class="wrap"><div class="section-heading light"><div><p class="kicker">BY GRADE</p><h2>학년별<br>${level.key} 수학과외</h2></div><p>같은 학교급 안에서도 학년마다 필요한 개념과 공부 방법이 다릅니다.</p></div><div class="grade-grid cols-2">${level.grades.map(([name, text], index) => `<article class="grade-card"><span>0${index + 1}</span><h3>제주 ${name} 수학과외</h3><p>${text}</p></article>`).join("")}</div></div></section>
     <section class="areas"><div class="wrap"><div class="section-heading"><div><p class="kicker">LOCAL CLASS</p><h2>지역별<br>${level.key} 수학 찾기</h2></div><p>제주시와 서귀포시 각 읍·면·동의 ${level.key} 수학 수업 안내로 바로 이동합니다.</p></div>${directory}</div></section>
+    <section class="schools"><div class="wrap"><div class="section-heading"><div><p class="kicker">SCHOOLS</p><h2>제주 ${schoolLevels.find(([key]) => key === level.key)[1]}별<br>${level.key} 수학 내신</h2></div><p>제주시와 서귀포시 ${schoolLevels.find(([key]) => key === level.key)[1]} ${schools.filter(school => school.level === level.key).length}곳의 진도와 시험 범위를 학교별로 확인해 수업에 반영합니다.</p></div>${citySchoolBlocks(schools.filter(school => school.level === level.key))}</div></section>
     ${faqSection(`${level.key} 수학<br>자주 묻는 질문`, level.faqs)}
     <section class="local-details"><div class="wrap detail-grid"><article><p class="kicker">MORE</p><h2>다른 학교급<br>수학 안내</h2></article><article><div class="nearby-links">${otherLevels}<a href="/#areas">제주 지역별 수학과외<span>→</span></a></div></article></div></section>
     <section class="local-cta"><div class="wrap"><div><p class="kicker">CONSULTATION</p><h2>제주 ${level.key} 수학 상담</h2></div><a class="button button-citrus" href="${phoneLink}" aria-label="${phone}로 전화 상담">${phone} <span>☎</span></a></div></section>
@@ -310,6 +367,7 @@ function areaPage(area, index) {
   const short = shortName(area);
   const alias = aliases[area.slug];
   const remote = ["chuja", "udo"].includes(area.slug);
+  const areaSchools = schoolsFor(area);
   const intro = isCity
     ? `${areaName} 수학과외는 읍·면·동별 학교 일정과 학생의 생활권을 함께 고려합니다. 최근 시험지와 교재를 바탕으로 개념 이해, 풀이 순서, 계산 습관 가운데 어디에서 막혔는지 확인합니다.`
     : `${cityName} ${areaName} 수학과외는 최근 시험지와 현재 사용하는 교재를 먼저 살펴봅니다. 정답 개수만 확인하지 않고 개념 이해, 풀이 순서, 계산 습관 중 어디에서 막혔는지 구분해 다음 학습량을 정합니다.${alias ? ` ${alias} 생활권 학생의 학교 일정도 함께 반영합니다.` : ""}`;
@@ -329,6 +387,7 @@ function areaPage(area, index) {
     <section class="local-intro"><div class="wrap section-heading"><div><p class="kicker">LOCAL STUDY PLAN</p><h2>가까운 곳에서<br>꾸준히 배우는 수학</h2></div><div><p>${intro}</p><p>${area.focus}. 초등 개념과 연산, 중등 내신의 서술형 풀이, 고등 수학의 개념 연결과 문제 해석까지 현재 필요한 단계에 집중합니다.</p></div></div></section>
     <section class="levels"><div class="wrap"><div class="section-heading compact"><div><p class="kicker">SCHOOL LEVEL</p><h2>${short} 학교급별<br>수학 수업 안내</h2></div><p>학교급마다 필요한 공부가 다릅니다. ${short} 학생의 학년과 목표에 맞는 수업을 확인하세요.</p></div><div class="level-grid">${levelCards}</div></div></section>
     ${regionDirectory}
+    <section class="schools" id="schools"><div class="wrap"><div class="section-heading compact"><div><p class="kicker">SCHOOLS</p><h2>${short} ${areaSchools.nearby ? "인근 " : ""}학교별<br>수학 내신 대비</h2></div><p>${schoolSentence(areaSchools.list)}</p></div>${isCity ? schoolGrid(areaSchools.list, true) : schoolGrid(areaSchools.list, false)}</div></section>
     <section class="grade-section local-grades" id="grades"><div class="wrap"><div class="section-heading light"><div><p class="kicker">GRADE TRANSITION</p><h2>${areaName} 학년별<br>수학 학습 안내</h2></div><p>학년 전환기의 복습과 선행을 학생별 이해도에 맞춰 조정합니다.</p></div><div class="grade-grid">${gradeCards}</div></div></section>
     <section class="local-details"><div class="wrap detail-grid"><article><p class="kicker">LESSON FOCUS</p><h2>${areaName} 학생에게 맞는<br>현실적인 계획</h2><p>학교별 시험 일정과 학생의 생활 패턴을 고려해 무리하지 않고 이어갈 수 있는 주간 계획을 세웁니다. 대면 수업 가능 여부와 시간은 세부 위치와 희망 일정에 따라 상담 후 안내합니다.</p></article><article><p class="kicker">NEARBY AREAS</p><h3>${isCity ? `${areaName} 세부 지역` : `${cityName} 다른 지역`} 수학과외</h3><div class="nearby-links">${nearbyLinks}</div></article></div></section>
     ${faqSection(`${short} 수학과외<br>자주 묻는 질문`, faqs)}

@@ -37,6 +37,15 @@ for (const file of htmlFiles) {
   descriptions.add(description);
 }
 
+const schools = JSON.parse(await readFile(path.join(root, "src", "schools.json"), "utf8"));
+const home = await readFile(path.join(dist, "index.html"), "utf8");
+for (const school of schools) {
+  if (!home.includes(school.name)) throw new Error(`index.html is missing ${school.name}`);
+}
+for (const file of areaFiles) {
+  if (!(await readFile(file, "utf8")).includes('id="schools"')) throw new Error(`${path.relative(root, file)} has no school section`);
+}
+
 for (const file of ["CNAME", "robots.txt", "sitemap.xml", "rss.xml", ".nojekyll", "404.html", "assets/style.css", "favicon.ico", "favicon.svg", "apple-touch-icon.png"]) {
   await access(path.join(dist, file));
 }
