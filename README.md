@@ -6,6 +6,8 @@
 
 - 메인 제주 수학과외 페이지
 - 제주시·서귀포시 및 43개 읍·면·동 지역 페이지
+- 초등·중등·고등 학교급별 페이지
+- 제주 초·중·고·국제학교별 페이지 (`src/schools.json`)
 - 예비중1·예비중2·예비중3·예비고1·예비고2·예비고3 학습 안내
 - 검색엔진용 메타데이터, 구조화 데이터, 사이트맵, robots.txt
 
@@ -14,6 +16,12 @@
 ```powershell
 npm run build
 npm run check
+```
+
+학교 목록은 공공데이터포털의 전국초중등학교위치표준데이터(.xls)로 갱신합니다.
+
+```powershell
+python scripts/import-schools.py <전국초중등학교위치표준데이터.xls>
 ```
 
 생성 결과는 `dist` 폴더에 저장됩니다. `main` 브랜치에 푸시하면 GitHub Actions가 사이트를 빌드해 GitHub Pages로 배포합니다.

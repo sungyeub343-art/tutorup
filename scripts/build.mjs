@@ -67,7 +67,7 @@ const grades = [
   ["예비고3", "수능 출제 단원별 개념과 기출을 연결하고 제한 시간 안에 점수를 만드는 실전 루틴을 다집니다."]
 ];
 
-const lastUpdated = "2026-10-20";
+const lastUpdated = "2026-10-28";
 const phone = "010-2928-3614";
 const phoneLink = "tel:01029283614";
 const ogImage = "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?auto=format&fit=crop&w=1200&q=85";
@@ -197,6 +197,12 @@ for (const school of schools) {
 }
 const schoolLevels = [["초등", "초등학교"], ["중등", "중학교"], ["고등", "고등학교"], ["국제", "국제학교"]];
 const findArea = slug => regions.find(region => region.slug === slug);
+const schoolSlug = school => school.name.replace(/\s+/g, "-");
+const schoolPath = school => `/schools/${encodeURIComponent(schoolSlug(school))}/`;
+const schoolLink = school => `<a class="school-link" href="${schoolPath(school)}">${school.name}</a>`;
+// 검색에서 많이 쓰는 줄임말(오현고, 제주여중 등)
+const schoolShortOverrides = { 제주대학교사범대학부설고등학교: "사대부고", 제주대학교사범대학부설중학교: "사대부중", 제주대학교교육대학부설초등학교: "교대부설초", 제주여자상업고등학교: "제주여상", 제주외국어고등학교: "제주외고", "세인트존스베리 아카데미 제주": "SJA Jeju" };
+const schoolShort = school => schoolShortOverrides[school.name] ?? school.name.replace("여자", "여").replace(/고등학교$/, "고").replace(/중학교$/, "중").replace(/초등학교$/, "초");
 function schoolsFor(area) {
   if (area.type === "시") return { list: schools.filter(school => school.city === area.name), nearby: false };
   const list = schools.filter(school => school.areas.includes(area.slug));
@@ -208,8 +214,8 @@ function schoolGrid(list, grouped) {
     if (!items.length) return "";
     const towns = [...new Set(items.map(school => school.town))];
     const content = grouped
-      ? towns.map(town => { const inTown = items.filter(school => school.town === town); return `<p><a href="${areaPath(findArea(inTown[0].areas[0]))}">${town}</a>${inTown.map(school => school.name).join(" · ")}</p>`; }).join("")
-      : `<p>${items.map(school => school.name).join(" · ")}</p>`;
+      ? towns.map(town => { const inTown = items.filter(school => school.town === town); return `<p><a href="${areaPath(findArea(inTown[0].areas[0]))}">${town}</a>${inTown.map(schoolLink).join(" · ")}</p>`; }).join("")
+      : `<p>${items.map(schoolLink).join(" · ")}</p>`;
     return `<article><h3>${label}<small>${items.length}개교</small></h3>${content}</article>`;
   }).join("")}</div>`;
 }
@@ -223,6 +229,91 @@ function schoolSentence(list) {
   ].filter(Boolean);
   const international = list.some(school => school.level === "국제") ? " 국제학교 학생은 학교 커리큘럼과 진도를 확인해 수업 방향을 정합니다." : "";
   return `${parts.join(", ")}을 중심으로 준비합니다. 학교마다 다른 시험 범위와 부교재를 확인해 수업에 반영합니다.${international}`;
+}
+
+// 학교별 페이지: 학교 고유 정보(개교 연도·설립 구분·주소·같은 지역 학교)로 페이지마다 내용이 달라지도록 구성합니다.
+const schoolCopy = {
+  초등: {
+    tagline: "학교 진도와 단원평가에 맞춰 기초수학과 수학공부 습관을 함께 잡습니다.",
+    title: name => `${name} 초등 수학·기초수학 1:1`,
+    description: (school, short, loc) => `${short} 학생 1:1 수학과외. ${school.name} 학교 진도와 단원평가에 맞춘 초등 기초수학·연산·서술형 수업과 수학공부 습관 관리. ${loc} 상담 ${phone}`,
+    intro: [
+      (school, short, loc) => `${loc}에 있는 ${school.name}(${school.founded}년 개교·${school.type}) 학생을 위한 초등 수학 수업입니다. 학교 진도와 단원평가를 기준으로 연산·분수·도형 같은 기초수학의 빈틈을 먼저 확인합니다.`,
+      (school, short, loc) => `${short} 학생의 초등 수학공부는 학교에서 배우는 단원을 놓치지 않는 것에서 시작합니다. ${loc} ${school.name}의 학기 진도에 맞춰 개념 설명과 직접 풀이를 반복합니다.`,
+      (school, short, loc) => `${school.founded}년 개교한 ${loc}의 ${school.type} 초등학교, ${school.name}. 학생마다 이해 속도가 다르기 때문에 ${short} 초등 수학수업은 현재 학년의 핵심 단원부터 차근히 점검합니다.`
+    ],
+    steps: [["단원평가 확인", "최근 단원평가와 학교 수학 익힘 문제에서 틀린 유형을 확인합니다."], ["기초수학 점검", "연산·분수·도형 가운데 다음 단원에 필요한 기초를 먼저 다집니다."], ["서술형 연습", "문제를 읽고 식으로 바꾸는 과정을 말과 글로 설명하게 합니다."], ["복습 루틴", "수업이 없는 날의 과제량을 정해 꾸준한 수학공부 습관을 만듭니다."]],
+    faq: short => [`${short} 학생도 기초수학부터 시작할 수 있나요?`, "네. 연산, 분수, 도형 중 어느 부분에서 막히는지 확인한 뒤 현재 학년 진도와 함께 기초수학을 단계적으로 보완합니다."]
+  },
+  중등: {
+    tagline: "학교별 시험 범위와 서술형까지 반영해 수학내신을 준비합니다.",
+    title: name => `${name} 수학내신·서술형 대비 1:1`,
+    description: (school, short, loc) => `${short} 학생 1:1 수학과외. ${school.name} 시험 범위·학교 프린트·서술형에 맞춘 중등 수학내신 대비와 기초수학 보완. ${loc} 상담 ${phone}`,
+    intro: [
+      (school, short, loc) => `${loc}에 있는 ${school.name}(${school.founded}년 개교·${school.type}) 학생을 위한 중등 수학 수업입니다. 학교별 시험 범위와 서술형 비중을 확인해 ${short} 수학내신을 준비합니다.`,
+      (school, short, loc) => `${short} 수학내신은 같은 교과서를 쓰더라도 학교 프린트와 서술형 출제 방식에 따라 준비 방법이 달라집니다. ${loc} ${school.name}의 시험 일정에 맞춰 개념 정리부터 실전 점검까지 계획을 세웁니다.`,
+      (school, short, loc) => `${school.founded}년 개교한 ${loc}의 ${school.type} 중학교, ${school.name}. ${short} 학생의 기초수학 빈틈을 보완하면서 학기별 수학내신과 다음 학년 준비를 함께 설계합니다.`
+    ],
+    steps: [["시험 범위 확인", "학교 공지와 교과서, 학교 프린트로 시험 범위를 정리합니다."], ["개념 정리", "시험 4주 전까지 단원별 개념과 기본 유형을 정리합니다."], ["학교 유형 연습", "서술형과 수행평가를 포함해 학교 출제 경향에 맞춘 문제를 풉니다."], ["실전 점검", "시험 직전 제한 시간 안에 풀어 보고 오답을 마지막으로 정리합니다."]],
+    faq: short => [`${short} 서술형과 수행평가도 준비하나요?`, "네. 풀이 과정을 식과 문장으로 정리하는 연습을 매 수업 진행하고, 수행평가 일정과 과제도 함께 확인합니다."]
+  },
+  고등: {
+    tagline: "학교 부교재와 기출 경향을 반영한 수학내신, 그리고 수능수학까지 함께 설계합니다.",
+    title: name => `${name} 수학내신·수능수학 1:1`,
+    description: (school, short, loc) => `${short} 학생 1:1 수학과외. ${school.name} 부교재·기출 경향을 반영한 고등 수학내신과 수능수학·수능대비, 기초수학 보완까지. ${loc} 상담 ${phone}`,
+    intro: [
+      (school, short, loc) => `${loc}에 있는 ${school.name}(${school.founded}년 개교·${school.type}) 학생을 위한 고등 수학 수업입니다. 학교 부교재와 기출 경향을 반영한 수학내신, 그리고 수능수학 대비를 함께 설계합니다.`,
+      (school, short, loc) => `${short} 수학내신은 학교마다 다른 부교재와 변별력 문항에 대비하는 것이 핵심입니다. ${loc} ${school.name}의 시험 일정에 맞춰 내신을 준비하고, 시험 이후에는 수능대비로 이어갑니다.`,
+      (school, short, loc) => `${school.founded}년 개교한 ${loc}의 ${school.type} 고등학교, ${school.name}. ${short} 학생의 기초수학 보완부터 모의고사 분석, 수능수학 실전 연습까지 단계적으로 관리합니다.`
+    ],
+    steps: [["시험 범위·부교재", "학교 교과서와 부교재, 프린트 범위를 확인합니다."], ["개념과 변별 문항", "개념의 조건과 예외를 정리해 고난도 문항에 대비합니다."], ["학교 기출 경향", "학교 시험의 출제 경향에 맞춰 유형을 연습합니다."], ["내신 이후 수능", "시험이 끝나면 수능수학 기출과 모의고사 분석으로 이어갑니다."]],
+    faq: short => [`${short} 학생의 수능수학 대비도 가능한가요?`, "가능합니다. 학기 중에는 수학내신 비중을 높이고, 방학과 시험 이후에는 수능 기출 분석과 모의고사 실전 연습 비중을 높입니다."]
+  },
+  국제: {
+    tagline: "학교 진도와 과제를 확인해 막히는 수학 개념을 보완합니다.",
+    title: (name, loc) => `${loc} 국제학교 수학 1:1`,
+    description: (school, short, loc) => `${school.name} 학생 1:1 수학과외. 학교 진도와 과제에 맞춰 막히는 수학 개념을 보완하고 평가 일정에 맞춰 준비합니다. ${loc} 영어교육도시 상담 ${phone}`,
+    intro: [(school, short, loc) => `${loc} 제주영어교육도시에 있는 국제학교 ${school.name}(${school.founded}년 개교) 학생을 위한 1:1 수학 수업입니다. 학교 진도와 과제를 확인하고 막히는 개념을 한국어로 정리한 뒤 원래 표현과 연결합니다.`],
+    steps: [["학교 진도 확인", "수업 자료와 과제로 현재 학교 진도를 확인합니다."], ["개념 보완", "막히는 개념을 한국어로 정리하고 학교에서 쓰는 표현과 연결합니다."], ["과제·평가 대비", "학교 과제와 평가 일정에 맞춰 연습 문제를 준비합니다."], ["진로 연계", "학년과 진로 계획에 맞춰 필요한 수학 과정을 함께 점검합니다."]],
+    faq: short => [`${short} 학교 과제와 평가도 함께 준비할 수 있나요?`, "네. 학교 수업 자료와 과제, 평가 일정을 확인해 필요한 개념과 연습 문제를 준비합니다."]
+  }
+};
+
+function schoolPage(school, index) {
+  const copy = schoolCopy[school.level];
+  const short = schoolShort(school);
+  const loc = `${school.city} ${school.town}`;
+  const levelInfo = levels.find(level => level.key === school.level);
+  const label = schoolLevels.find(([key]) => key === school.level)[1];
+  const city = cities.find(item => item.name === school.city);
+  const areas = school.areas.map(findArea);
+  const neighbours = schools.filter(other => other !== school && other.areas.some(slug => school.areas.includes(slug)));
+  const faqs = [
+    [`${short} 시험 범위에 맞춰 수업하나요?`, `네. ${school.name}의 ${school.level === "초등" ? "학기 진도와 단원평가" : school.level === "국제" ? "수업 자료와 평가 일정" : "시험 범위와 교과서·부교재"}를 확인해 수업 계획을 세웁니다.`],
+    copy.faq(short),
+    [`${short} 학생은 어디에서 수업하나요?`, `${areas.map(area => area.name).join("·")} 지역 안내를 기준으로, 대면 수업 가능 여부와 시간은 세부 위치와 희망 일정에 따라 상담 후 안내합니다.`],
+    ["상담은 어떻게 신청하나요?", `${phone}로 전화하시면 학생의 학년, 최근 성적, 목표를 듣고 수업 방향을 안내합니다.`]
+  ];
+  const facts = [["학교명", school.name], ["학교급", label], ["설립 구분", school.type], ["개교", `${school.founded}년`], ["소재지", school.address], ["지역 안내", areas.map(area => `<a href="${areaPath(area)}">${area.name} 수학과외</a>`).join(" · ")]];
+  const gradeSection = levelInfo ? `<section class="grade-section"><div class="wrap"><div class="section-heading light"><div><p class="kicker">BY GRADE</p><h2>${short} 학년별<br>수학 수업</h2></div><p>학년마다 필요한 개념과 공부 방법이 다릅니다.</p></div><div class="grade-grid cols-2">${levelInfo.grades.map(([name, text], gradeIndex) => `<article class="grade-card"><span>0${gradeIndex + 1}</span><h3>${short} ${name} 수학</h3><p>${text}</p></article>`).join("")}</div></div></section>` : "";
+  const neighbourSection = neighbours.length ? `<section class="schools"><div class="wrap"><div class="section-heading compact"><div><p class="kicker">NEARBY SCHOOLS</p><h2>${areas[0].name} 다른 학교<br>수학 수업 안내</h2></div><p>같은 지역 학교의 수학 수업 안내도 확인할 수 있습니다.</p></div>${schoolGrid(neighbours, false)}</div></section>` : "";
+  const body = `<main id="main" class="local-page">
+    <section class="local-hero"><div class="wrap"><nav class="breadcrumbs" aria-label="현재 위치"><a href="/">제주</a><span>/</span><a href="${areaPath(city)}">${school.city}</a><span>/</span><a href="${areaPath(areas[0])}">${areas[0].name}</a><span>/</span><strong>${school.name}</strong></nav><p class="eyebrow">${loc} · SCHOOL MATH</p><h1>${short}<br>수학과외</h1><p>${school.name} 학생을 위한 1:1 맞춤 수학 수업. ${copy.tagline}</p></div></section>
+    <section class="local-intro"><div class="wrap section-heading"><div><p class="kicker">SCHOOL PROFILE</p><h2>${short} 학생을 위한<br>수학 수업</h2></div><div><p>${copy.intro[index % copy.intro.length](school, short, loc)}</p><dl class="school-facts">${facts.map(([term, value]) => `<div><dt>${term}</dt><dd>${value}</dd></div>`).join("")}</dl></div></div></section>
+    <section class="levels"><div class="wrap"><div class="section-heading compact"><div><p class="kicker">STUDY PLAN</p><h2>${short} ${school.level === "초등" ? "수학 수업" : school.level === "국제" ? "수학 학습" : "수학내신"}<br>준비 과정</h2></div><p>${school.name}의 일정과 학생의 현재 실력을 기준으로 아래 순서로 진행합니다.</p></div><div class="topic-grid">${copy.steps.map(([heading, text], stepIndex) => `<article><b>0${stepIndex + 1}</b><h3>${heading}</h3><p>${text}</p></article>`).join("")}</div>${levelInfo ? `<p class="level-more"><a href="${levelPath(levelInfo)}">제주 ${levelInfo.key} 수학과외 전체 안내 →</a></p>` : ""}</div></section>
+    ${gradeSection}
+    ${neighbourSection}
+    ${faqSection(`${short} 수학과외<br>자주 묻는 질문`, faqs)}
+    <section class="local-cta"><div class="wrap"><div><p class="kicker">CONSULTATION</p><h2>${short} 수학과외 상담</h2></div><a class="button button-citrus" href="${phoneLink}" aria-label="${phone}로 전화 상담">${phone} <span>☎</span></a></div></section>
+  </main>`;
+  return layout({
+    title: `${short} 수학과외 | ${copy.title(school.name, loc)}`,
+    description: copy.description(school, short, loc),
+    canonical: `${siteUrl}${schoolPath(school)}`,
+    breadcrumbs: [["제주 수학과외", `${siteUrl}/`], [`${city.name} 수학과외`, `${siteUrl}${areaPath(city)}`], [`${areas[0].name} 수학과외`, `${siteUrl}${areaPath(areas[0])}`], [`${short} 수학과외`, `${siteUrl}${schoolPath(school)}`]],
+    faqs,
+    body
+  });
 }
 
 function layout({ title, description, canonical, body, breadcrumbs = [], faqs = [], noindex = false }) {
@@ -451,8 +542,13 @@ for (const [index, area] of [...cities, ...regions].entries()) {
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, "index.html"), areaPage(area, index));
 }
+for (const [index, school] of schools.entries()) {
+  const directory = path.join(dist, "schools", schoolSlug(school));
+  await mkdir(directory, { recursive: true });
+  await writeFile(path.join(directory, "index.html"), schoolPage(school, index));
+}
 
-const priority = url => url === `${siteUrl}/` ? "1.0" : levels.some(level => url.endsWith(levelPath(level))) || cities.some(city => url.endsWith(areaPath(city))) ? "0.9" : "0.7";
+const priority = url => url === `${siteUrl}/` ? "1.0" : levels.some(level => url.endsWith(levelPath(level))) || cities.some(city => url.endsWith(areaPath(city))) ? "0.9" : url.includes("/schools/") ? "0.6" : "0.7";
 await writeFile(path.join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(page => `\n  <url><loc>${page.url}</loc><lastmod>${lastUpdated}</lastmod><changefreq>weekly</changefreq><priority>${priority(page.url)}</priority></url>`).join("")}\n</urlset>\n`);
 const pubDate = new Date(`${lastUpdated}T09:00:00+09:00`).toUTCString();
 await writeFile(path.join(dist, "rss.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>제주 수학과외</title><link>${siteUrl}/</link><description>제주 초등·중등·고등 1:1 수학과외 지역별·학교급별 수업 안내</description><language>ko</language><lastBuildDate>${pubDate}</lastBuildDate>${pages.map(page => `\n  <item><title>${esc(page.title)}</title><link>${page.url}</link><guid>${page.url}</guid><description>${esc(page.description)}</description><pubDate>${pubDate}</pubDate></item>`).join("")}\n</channel></rss>\n`);

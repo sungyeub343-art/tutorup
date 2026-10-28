@@ -17,7 +17,7 @@ def main(source):
     sheet = xlrd.open_workbook(source, encoding_override="cp949").sheet_by_index(0)
     rows = [[str(cell.value).strip() for cell in sheet.row(index)] for index in range(sheet.nrows)]
     header = next(row for row in rows if "학교명" in row)
-    col = {name: header.index(name) for name in ["학교명", "학교급구분", "본교분교구분", "운영상태", "소재지지번주소"]}
+    col = {name: header.index(name) for name in ["학교명", "학교급구분", "설립일자", "설립형태", "본교분교구분", "운영상태", "소재지지번주소", "소재지도로명주소"]}
     schools = {}
     for row in rows:
         address = row[col["소재지지번주소"]]
@@ -32,7 +32,10 @@ def main(source):
             "name": name,
             "level": "국제" if international else LEVELS[row[col["학교급구분"]]],
             "city": parts[1],
-            "town": parts[2]
+            "town": parts[2],
+            "founded": row[col["설립일자"]][:4],
+            "type": row[col["설립형태"]],
+            "address": row[col["소재지도로명주소"]].replace("제주특별자치도 ", "")
         })
     result = sorted(schools.values(), key=lambda school: (school["city"], school["town"], school["level"], school["name"]))
     OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

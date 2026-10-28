@@ -117,6 +117,14 @@ a.level-card:hover > p, a.level-card:hover li span, a.level-card:focus-visible >
 .school-grid p { margin: 0 0 .7rem; color: var(--muted); font-size: .9rem; }
 .school-grid p a { margin-right: .5rem; color: var(--basalt); font-weight: 700; }
 .school-grid p a:hover { color: var(--coral); }
+.school-grid p a.school-link { margin-right: 0; color: inherit; font-weight: 400; }
+.school-grid p a.school-link:hover { color: var(--coral); text-decoration: underline; }
+.school-facts { margin: 2rem 0 0; border-top: 1px solid var(--line); }
+.school-facts div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid var(--line); font-size: .92rem; }
+.school-facts dt { color: var(--muted); }
+.school-facts dd { margin: 0; color: var(--basalt); font-weight: 600; }
+.school-facts a:hover { color: var(--coral); }
+.level-more { margin: 2rem 0 0; font-weight: 700; }
 .grade-grid.cols-2 { grid-template-columns: 1fr 1fr; }
 .faq { padding: 8rem 0; }
 .faq-list { border-top: 1px solid var(--line); }

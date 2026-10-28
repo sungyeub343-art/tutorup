@@ -14,16 +14,20 @@ const allLevelKeywords = Object.values(levelKeywords).flat();
 const areaDirectories = await readdir(path.join(dist, "areas"), { withFileTypes: true });
 const areaFiles = areaDirectories.filter(entry => entry.isDirectory()).map(entry => path.join(dist, "areas", entry.name, "index.html"));
 const levelFiles = Object.keys(levelKeywords).map(slug => path.join(dist, slug, "index.html"));
-const htmlFiles = [path.join(dist, "index.html"), ...levelFiles, ...areaFiles];
+const schools = JSON.parse(await readFile(path.join(root, "src", "schools.json"), "utf8"));
+const schoolFiles = schools.map(school => path.join(dist, "schools", school.name.replace(/\s+/g, "-"), "index.html"));
+const htmlFiles = [path.join(dist, "index.html"), ...levelFiles, ...areaFiles, ...schoolFiles];
+const expectedPages = 49 + schools.length;
 
-if (htmlFiles.length !== 49) throw new Error(`Expected 49 index pages, found ${htmlFiles.length}`);
+if (htmlFiles.length !== expectedPages) throw new Error(`Expected ${expectedPages} index pages, found ${htmlFiles.length}`);
 const titles = new Set();
 const descriptions = new Set();
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
   const name = path.relative(root, file);
   const level = Object.keys(levelKeywords).find(slug => file === path.join(dist, slug, "index.html"));
-  const required = level ? ["수학과외", ...levelKeywords[level]] : ["수학과외", ...gradeKeywords, ...allLevelKeywords];
+  const school = schools[schoolFiles.indexOf(file)];
+  const required = school ? ["수학과외", school.name] : level ? ["수학과외", ...levelKeywords[level]] : ["수학과외", ...gradeKeywords, ...allLevelKeywords];
   for (const keyword of required) {
     if (!html.includes(keyword)) throw new Error(`${name} is missing ${keyword}`);
   }
@@ -37,7 +41,6 @@ for (const file of htmlFiles) {
   descriptions.add(description);
 }
 
-const schools = JSON.parse(await readFile(path.join(root, "src", "schools.json"), "utf8"));
 const home = await readFile(path.join(dist, "index.html"), "utf8");
 for (const school of schools) {
   if (!home.includes(school.name)) throw new Error(`index.html is missing ${school.name}`);
@@ -50,7 +53,7 @@ for (const file of ["CNAME", "robots.txt", "sitemap.xml", "rss.xml", ".nojekyll"
   await access(path.join(dist, file));
 }
 const sitemap = await readFile(path.join(dist, "sitemap.xml"), "utf8");
-if ((sitemap.match(/<url>/g) || []).length !== 49) throw new Error("Sitemap URL count does not match page count");
+if ((sitemap.match(/<url>/g) || []).length !== expectedPages) throw new Error("Sitemap URL count does not match page count");
 const rss = await readFile(path.join(dist, "rss.xml"), "utf8");
-if ((rss.match(/<item>/g) || []).length !== 49) throw new Error("RSS item count does not match page count");
+if ((rss.match(/<item>/g) || []).length !== expectedPages) throw new Error("RSS item count does not match page count");
 console.log(`Checked ${htmlFiles.length} pages, metadata, keywords, and deployment files`);
