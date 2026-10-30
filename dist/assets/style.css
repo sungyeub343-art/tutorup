@@ -229,3 +229,11 @@ footer { padding: 3rem 0; color: rgba(255,255,255,.66); background: #101b19; fon
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+.unit-list { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.6rem 0 0; padding: 0; list-style: none; }
+.unit-list li { padding: .35rem .75rem; border: 1px solid var(--line); background: var(--white); font-size: .86rem; font-weight: 600; }
+.local-intro .unit-note { margin-top: 1.2rem; font-size: .84rem; }
+.grade-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2rem; }
+.grade-links a { padding: .45rem .9rem; border: 1px solid rgba(255,255,255,.35); font-size: .86rem; font-weight: 600; }
+.grade-links a:hover, .grade-links a:focus-visible { color: var(--basalt); background: var(--citrus); border-color: var(--citrus); }
+.grade-links.light a { border-color: var(--line); background: var(--white); }
+.grade-nav a span { color: var(--muted); font-size: .82rem; }

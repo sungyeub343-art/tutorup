@@ -67,7 +67,7 @@ const grades = [
   ["예비고3", "수능 출제 단원별 개념과 기출을 연결하고 제한 시간 안에 점수를 만드는 실전 루틴을 다집니다."]
 ];
 
-const lastUpdated = "2026-10-28";
+const lastUpdated = "2026-10-30";
 const phone = "010-2928-3614";
 const phoneLink = "tel:01029283614";
 const ogImage = "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?auto=format&fit=crop&w=1200&q=85";
@@ -161,6 +161,97 @@ const levels = [
   }
 ];
 const levelPath = level => `/${level.slug}/`;
+
+// 학년별 페이지: 학년마다 배우는 단원과 자주 막히는 지점이 달라 페이지별 내용이 겹치지 않습니다.
+const gradePages = [
+  {
+    slug: "e1", key: "초1", level: "초등", full: "초등학교 1학년", headline: "수 세기·덧셈과 뺄셈",
+    units: ["9까지의 수", "여러 가지 모양", "덧셈과 뺄셈", "비교하기", "50까지의 수", "100까지의 수", "시계 보기와 규칙 찾기"],
+    intro: "초등학교 1학년 수학은 숫자를 읽고 세는 것에서 시작해 덧셈과 뺄셈의 뜻을 익히는 단계입니다. 손가락 계산에서 벗어나 수를 가르고 모으는 감각을 기르면 2학년 받아올림 계산이 훨씬 쉬워집니다.",
+    struggles: [["수의 순서와 크기", "몇째와 몇 개를 헷갈리거나 두 수의 크기를 비교할 때 막히는 경우가 많습니다."], ["가르기와 모으기", "10을 만드는 수의 짝을 바로 떠올리지 못하면 덧셈과 뺄셈이 느려집니다."], ["문장으로 된 문제", "문제를 읽고 더할지 뺄지 판단하는 연습이 필요합니다."]],
+    faqs: [["초1도 수학과외가 필요한가요?", "대부분은 학교 수업과 가정 학습으로 충분합니다. 다만 수 세기나 10 만들기에서 자주 막힌다면 짧게라도 1:1로 점검하는 것이 도움이 됩니다."], ["초1 수학공부는 어떻게 시작하나요?", "구체물과 그림으로 수를 세고 가르는 활동을 먼저 하고, 익숙해지면 식으로 옮겨 쓰게 합니다."]]
+  },
+  {
+    slug: "e2", key: "초2", level: "초등", full: "초등학교 2학년", headline: "곱셈구구·받아올림 계산",
+    units: ["세 자리 수", "네 자리 수", "받아올림이 있는 덧셈", "받아내림이 있는 뺄셈", "길이 재기", "곱셈구구", "시각과 시간", "표와 그래프"],
+    intro: "2학년은 세 자리 수와 네 자리 수, 받아올림·받아내림이 있는 덧셈과 뺄셈, 그리고 곱셈구구를 배웁니다. 곱셈구구를 외우는 것보다 '몇씩 몇 묶음'이라는 뜻을 이해하는 것이 3학년 나눗셈의 바탕이 됩니다.",
+    struggles: [["받아올림·받아내림", "자리값을 이해하지 못한 채 계산 순서만 외우면 실수가 반복됩니다."], ["곱셈구구의 뜻", "외운 구구단을 문장제에 적용하지 못하는 경우가 많습니다."], ["길이와 시각 단위", "1m=100cm, 1시간=60분처럼 단위 사이의 관계를 헷갈리기 쉽습니다."]],
+    faqs: [["곱셈구구는 언제까지 익혀야 하나요?", "2학년에 배우며 3학년 곱셈·나눗셈 전에 익숙해지는 것이 좋습니다. 뜻을 먼저 이해한 뒤 반복으로 속도를 높입니다."], ["계산 실수가 잦은데 어떻게 하나요?", "자리를 맞춰 쓰는 습관과 검산을 함께 연습하면 실수가 크게 줄어듭니다."]]
+  },
+  {
+    slug: "e3", key: "초3", level: "초등", full: "초등학교 3학년", headline: "나눗셈·분수와 소수",
+    units: ["세 자리 수의 덧셈과 뺄셈", "평면도형", "나눗셈", "곱셈", "길이와 시간", "분수와 소수", "원", "들이와 무게"],
+    intro: "3학년은 나눗셈과 분수·소수를 처음 배우는 학년입니다. 곱셈과 나눗셈의 관계, 전체와 부분으로서의 분수를 정확히 이해해야 4학년 이후 계산이 흔들리지 않습니다.",
+    struggles: [["나눗셈의 두 가지 뜻", "똑같이 나누기와 몇 번 덜어 내기를 구분하지 못하면 문장제에서 막힙니다."], ["분수와 소수의 첫 개념", "분모와 분자의 의미를 그림으로 설명하지 못하는 경우가 많습니다."], ["들이와 무게 단위", "L와 mL, kg과 g의 환산에서 실수가 잦습니다."]],
+    faqs: [["3학년 수학이 갑자기 어려워졌어요.", "나눗셈과 분수가 새로 나오면서 흔히 생기는 변화입니다. 곱셈구구와 자리값을 먼저 점검하면 대부분 빠르게 회복됩니다."], ["분수는 어떻게 공부하나요?", "막대나 원 그림으로 전체를 똑같이 나누는 활동부터 시작해 수직선 위의 분수로 연결합니다."]]
+  },
+  {
+    slug: "e4", key: "초4", level: "초등", full: "초등학교 4학년", headline: "큰 수·분수와 소수의 계산",
+    units: ["큰 수", "각도", "곱셈과 나눗셈", "평면도형의 이동", "막대그래프", "분수의 덧셈과 뺄셈", "삼각형과 사각형", "소수의 덧셈과 뺄셈", "꺾은선그래프", "다각형"],
+    intro: "4학년은 큰 수, 각도, 세 자리 수의 곱셈과 두 자리 수로 나누는 나눗셈, 분모가 같은 분수와 소수의 덧셈·뺄셈을 배웁니다. 계산량이 많아지고 도형 단원이 본격화되는 시기라 정확도와 공간 감각을 함께 길러야 합니다.",
+    struggles: [["두 자리 수로 나누기", "몫을 어림하는 과정에서 시간이 오래 걸리고 실수가 생깁니다."], ["각도와 도형 분류", "각도기 사용과 삼각형·사각형의 분류 기준을 정확히 익혀야 합니다."], ["그래프 해석", "막대그래프·꺾은선그래프에서 눈금 한 칸의 크기를 놓치기 쉽습니다."]],
+    faqs: [["4학년 때 선행을 시작해야 하나요?", "4학년 계산이 정확하다면 5학년 약수와 배수를 가볍게 미리 볼 수 있습니다. 나눗셈이 불안하다면 복습이 먼저입니다."], ["도형 단원을 어려워해요.", "직접 그리고 접어 보는 활동으로 성질을 확인한 뒤 문제로 옮기면 이해가 빨라집니다."]]
+  },
+  {
+    slug: "e5", key: "초5", level: "초등", full: "초등학교 5학년", headline: "약수와 배수·분수의 계산",
+    units: ["자연수의 혼합 계산", "약수와 배수", "규칙과 대응", "약분과 통분", "분수의 덧셈과 뺄셈", "다각형의 둘레와 넓이", "수의 범위와 어림", "분수의 곱셈", "합동과 대칭", "소수의 곱셈", "직육면체", "평균과 가능성"],
+    intro: "5학년은 약수와 배수, 약분과 통분, 분모가 다른 분수의 덧셈과 뺄셈, 분수와 소수의 곱셈을 배웁니다. 초등 수학에서 가장 중요한 학년으로, 이 시기의 분수 계산이 중학교 문자와 식의 기초가 됩니다.",
+    struggles: [["약분과 통분", "최대공약수·최소공배수를 구하는 이유를 모른 채 절차만 외우는 경우가 많습니다."], ["혼합 계산 순서", "괄호와 곱셈·나눗셈의 계산 순서를 놓쳐 답이 달라집니다."], ["넓이 공식", "다각형 넓이 공식을 외우기만 하면 응용 문제에서 막힙니다."]],
+    faqs: [["5학년 수학이 왜 중요한가요?", "분수 계산과 약수·배수가 중학교 정수·유리수와 방정식의 바탕이 되기 때문입니다. 이 시기에 생긴 빈틈은 중학교에서 크게 드러납니다."], ["분수 계산 실수를 줄이려면?", "통분 과정을 생략하지 않고 쓰고, 마지막에 기약분수인지 확인하는 습관을 들입니다."]]
+  },
+  {
+    slug: "e6", key: "초6", level: "초등", full: "초등학교 6학년", headline: "비와 비율·중학 수학 준비",
+    units: ["분수의 나눗셈", "각기둥과 각뿔", "소수의 나눗셈", "비와 비율", "여러 가지 그래프", "직육면체의 부피와 겉넓이", "공간과 입체", "비례식과 비례배분", "원의 넓이", "원기둥, 원뿔, 구"],
+    intro: "6학년은 분수와 소수의 나눗셈, 비와 비율, 비례식과 비례배분, 원의 넓이, 입체도형을 배웁니다. 초등 과정을 마무리하면서 중1 정수와 유리수, 문자와 식으로 넘어갈 준비를 하는 학년입니다.",
+    struggles: [["비와 비율", "백분율과 비율을 상황에 맞게 바꾸어 표현하는 데 어려움을 겪습니다."], ["분수의 나눗셈", "나누는 수를 뒤집어 곱하는 이유를 모르면 응용 문제에서 흔들립니다."], ["입체도형", "겉넓이와 부피를 혼동하거나 전개도를 떠올리지 못하는 경우가 많습니다."]],
+    faqs: [["초6 겨울방학에는 무엇을 준비하나요?", "초등 분수·소수 계산을 정리한 뒤 중1 1학기의 소인수분해와 정수·유리수를 미리 학습합니다."], ["중학교 선행은 어디까지 하나요?", "현재 실력에 따라 다르지만 중1 1학기 내용을 정확히 이해하는 것을 우선 목표로 합니다."]]
+  },
+  {
+    slug: "m1", key: "중1", level: "중등", full: "중학교 1학년", headline: "정수와 유리수·일차방정식",
+    units: ["소인수분해", "정수와 유리수", "문자의 사용과 식의 계산", "일차방정식", "좌표평면과 그래프", "기본 도형", "작도와 합동", "평면도형과 입체도형", "자료의 정리와 해석"],
+    intro: "중학교 1학년은 소인수분해, 정수와 유리수, 문자와 식, 일차방정식, 좌표평면과 그래프, 기본 도형과 통계를 배웁니다. 음수와 문자가 처음 등장해 계산 규칙이 바뀌는 시기이므로 초등 계산 습관을 중학 방식으로 바꾸는 것이 중요합니다. 학교에 따라 지필평가가 없는 학기가 있어 첫 시험 경험이 늦어질 수 있습니다.",
+    struggles: [["음수의 계산", "부호 실수가 가장 많이 나오는 단원으로, 수직선으로 원리를 이해해야 합니다."], ["문자와 식", "분배법칙과 동류항 정리에서 실수가 반복됩니다."], ["일차방정식 활용", "문장을 식으로 세우는 단계에서 가장 많이 막힙니다."]],
+    faqs: [["중1 첫 시험은 어떻게 준비하나요?", "교과서 개념과 예제를 먼저 정리하고, 서술형에 대비해 풀이 과정을 식으로 쓰는 연습을 합니다. 시험 4주 전부터 학교 프린트와 기출 유형을 중심으로 준비합니다."], ["초등 때 수학을 잘했는데 중1에서 떨어졌어요.", "음수와 문자가 등장하면서 계산 방식이 바뀌기 때문에 흔히 생기는 일입니다. 부호와 식 정리 습관을 바로잡으면 빠르게 회복됩니다."]]
+  },
+  {
+    slug: "m2", key: "중2", level: "중등", full: "중학교 2학년", headline: "연립방정식·일차함수",
+    units: ["유리수와 순환소수", "식의 계산", "일차부등식", "연립일차방정식", "일차함수와 그래프", "삼각형과 사각형의 성질", "도형의 닮음", "피타고라스 정리", "확률"],
+    intro: "중학교 2학년은 유리수와 순환소수, 식의 계산, 일차부등식, 연립방정식, 일차함수, 도형의 성질과 닮음, 피타고라스 정리, 확률을 배웁니다. 계산량이 가장 많고 함수가 본격적으로 시작되는 학년이라 중학 수학의 분기점으로 꼽힙니다.",
+    struggles: [["연립방정식 활용", "미지수 두 개를 정하고 조건을 식으로 옮기는 과정이 어렵습니다."], ["일차함수와 그래프", "기울기와 절편의 의미를 그래프와 연결하지 못하면 고등 함수까지 영향을 받습니다."], ["도형의 성질 설명", "삼각형·사각형의 성질을 근거로 설명하는 서술형에서 감점이 많습니다."]],
+    faqs: [["중2 수학이 가장 어렵다고 하던데요?", "계산·함수·도형이 한꺼번에 나오기 때문입니다. 단원별로 약한 부분을 진단하고 서술형 풀이를 꾸준히 연습하면 충분히 대비할 수 있습니다."], ["일차함수를 어려워하면 어떻게 하나요?", "표·식·그래프를 오가며 같은 관계를 세 가지로 표현하는 연습을 합니다."]]
+  },
+  {
+    slug: "m3", key: "중3", level: "중등", full: "중학교 3학년", headline: "인수분해·이차함수",
+    units: ["제곱근과 실수", "다항식의 곱셈", "인수분해", "이차방정식", "이차함수와 그래프", "삼각비", "원의 성질", "대푯값과 산포도", "상관관계"],
+    intro: "중학교 3학년은 제곱근과 실수, 다항식의 곱셈과 인수분해, 이차방정식, 이차함수, 삼각비, 원의 성질, 통계를 배웁니다. 고1 공통수학이 이 내용을 바로 이어받기 때문에 고등 수학 준비의 출발점입니다.",
+    struggles: [["인수분해", "공식을 바로 떠올리지 못하면 이차방정식과 고등 다항식까지 느려집니다."], ["이차함수의 그래프", "꼭짓점과 축을 구하는 과정에서 완전제곱식 변형이 흔들립니다."], ["원의 성질", "원주각과 접선의 성질을 문제 상황에 적용하는 데 어려움을 겪습니다."]],
+    faqs: [["중3 2학기 이후에는 무엇을 해야 하나요?", "2학기 내신을 마무리한 뒤 겨울방학까지 중학 전 범위 취약 단원 정리와 고1 공통수학1 예습을 병행합니다."], ["고등학교 선행은 어느 정도 필요할까요?", "공통수학1의 다항식과 방정식·부등식을 한 번 정확히 학습하는 것을 우선 목표로 합니다."]]
+  },
+  {
+    slug: "h1", key: "고1", level: "고등", full: "고등학교 1학년", headline: "공통수학1·공통수학2",
+    units: ["다항식의 연산", "나머지정리와 인수분해", "복소수와 이차방정식", "이차방정식과 이차함수", "여러 가지 방정식과 부등식", "경우의 수", "행렬", "도형의 방정식", "집합과 명제", "함수와 그래프"],
+    intro: "고등학교 1학년은 공통수학1(다항식, 방정식과 부등식, 경우의 수, 행렬)과 공통수학2(도형의 방정식, 집합과 명제, 함수와 그래프)를 배웁니다. 첫 고등 내신의 결과가 이후 학습 계획의 기준이 되기 때문에 1학기 준비가 특히 중요합니다.",
+    struggles: [["나머지정리와 인수분해", "중학교 인수분해가 약하면 다항식 단원부터 막힙니다."], ["이차방정식과 이차함수", "판별식과 그래프의 위치 관계를 연결하는 문제가 변별 문항으로 자주 나옵니다."], ["도형의 방정식", "좌표와 식으로 도형을 해석하는 계산량이 많아 시간 관리가 필요합니다."]],
+    faqs: [["고1 첫 내신은 어떻게 준비하나요?", "학교 교과서와 부교재, 프린트 범위를 확인하고 시험 4~5주 전부터 개념 정리와 학교 출제 유형 연습을 진행합니다."], ["고1 모의고사도 대비해야 하나요?", "학기 중에는 내신을 우선하고, 모의고사는 범위가 겹치는 단원을 중심으로 시간 관리 연습을 함께 합니다."]]
+  },
+  {
+    slug: "h2", key: "고2", level: "고등", full: "고등학교 2학년", headline: "대수·미적분Ⅰ·확률과 통계",
+    units: ["지수와 로그", "지수함수와 로그함수", "삼각함수", "수열", "함수의 극한과 연속", "미분", "적분", "경우의 수와 확률", "통계"],
+    intro: "고등학교 2학년은 대수(지수와 로그, 삼각함수, 수열), 미적분Ⅰ(함수의 극한과 연속, 미분, 적분), 확률과 통계 가운데 학교가 편성한 과목을 배웁니다. 2028학년도 수능부터 이 세 과목이 수학 영역 공통 출제 범위이므로 내신 공부가 곧 수능 준비로 이어집니다.",
+    struggles: [["지수·로그와 삼각함수", "새로운 함수의 성질과 그래프를 외우기만 하면 응용 문제에서 흔들립니다."], ["수열", "규칙을 식으로 일반화하는 과정이 어려운 단원입니다."], ["미분의 활용", "극대·극소와 그래프 개형을 해석하는 문제가 변별 문항으로 나옵니다."]],
+    faqs: [["고2 수학 과목은 학교마다 다른가요?", "네. 학교 교육과정 편성에 따라 학기별로 배우는 과목과 순서가 다르기 때문에 학교 편성표를 확인하고 계획을 세웁니다."], ["2028학년도 수능 수학은 무엇이 달라지나요?", "수학 영역에서 선택과목 없이 대수, 미적분Ⅰ, 확률과 통계를 공통으로 출제합니다."]]
+  },
+  {
+    slug: "h3", key: "고3", level: "고등", full: "고등학교 3학년", headline: "수능수학·내신 마무리",
+    units: ["수능 출제 단원 기출 분석", "실전 모의고사", "시간 관리 훈련", "취약 유형 집중 보완", "남은 학기 내신", "수시 일정 관리"],
+    intro: "고등학교 3학년은 수능수학 실전 대비와 남은 내신, 수시 일정을 함께 관리하는 학년입니다. 2027학년도 수능은 수학Ⅰ·수학Ⅱ 공통과 선택과목(확률과 통계·미적분·기하) 구조이고, 2028학년도 수능부터는 대수·미적분Ⅰ·확률과 통계 공통 출제로 바뀌므로 응시 연도에 맞춰 범위를 확인합니다.",
+    struggles: [["시간 관리", "아는 문제도 시간 안에 풀지 못하는 경우가 많아 실전 연습이 필요합니다."], ["고난도 문항", "어려운 문항에 시간을 과하게 쓰지 않도록 문항 선택 순서를 정합니다."], ["반복되는 실수", "모의고사마다 같은 유형에서 실수가 나오면 원인을 기록해 줄여 나갑니다."]],
+    faqs: [["고3인데 지금 시작해도 늦지 않나요?", "남은 기간에 맞춰 점수를 올릴 수 있는 단원과 유형을 우선 정리합니다. 모의고사 결과를 분석해 현실적인 목표를 함께 세웁니다."], ["수시 준비와 수능 공부를 같이 할 수 있나요?", "내신 시험 기간에는 내신에 집중하고, 그 외 기간에는 수능 기출과 실전 모의고사 비중을 높여 균형을 맞춥니다."]]
+  }
+];
+const gradePath = grade => `/grades/${grade.slug}/`;
+const gradeByKey = key => gradePages.find(grade => grade.key === key);
+const gradeTagLinks = tags => tags.map(tag => gradeByKey(tag) ? `<a href="${gradePath(gradeByKey(tag))}">${tag}</a>` : tag).join(" · ");
 
 const gradeCards = grades.map(([name, text], index) => `<article class="grade-card"><span>0${index + 1}</span><h3>${name} 수학과외</h3><p>${text}</p></article>`).join("");
 const areaPath = area => `/areas/${area.slug}/`;
@@ -388,7 +479,7 @@ function homePage() {
   const body = `<main id="main">
     <section class="hero"><img src="https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?auto=format&fit=crop&w=2000&q=88" alt="제주의 푸른 바다와 해안 풍경"><div class="hero-shade"></div><div class="wrap hero-content"><p class="eyebrow">JEJU · PRIVATE MATH COACHING</p><h1>제주<br>수학과외</h1><p class="hero-copy">답을 외우기 전에 원리를 이해하도록.<br>초등 기초수학부터 중등 수학내신, 고등 수능수학까지 1:1 수학 수업.</p><div class="hero-actions"><a class="button button-citrus" href="#areas">우리 동네 수업 찾기 <span>↓</span></a><a class="button button-ghost" href="${phoneLink}" aria-label="${phone}로 전화 상담">${phone} <span>☎</span></a></div></div><div class="hero-facts">${levels.map(level => `<a href="${levelPath(level)}">${level.key} 수학</a>`).join("")}<span>내신 · 선행 · 수능</span><span>제주 전 지역 상담</span></div></section>
     <section class="intro" id="method"><div class="wrap"><div class="section-heading"><div><p class="kicker">01 · LESSON METHOD</p><h2>풀이보다 먼저<br>막힌 지점을 찾습니다</h2></div><p>같은 문제를 틀려도 이유는 다릅니다. 개념이 비어 있는지, 조건을 놓쳤는지, 계산 습관이 흔들리는지 먼저 구분한 뒤 학생에게 필요한 수업 순서를 정합니다.</p></div><div class="method-grid"><article><b>01</b><h3>현재 학습 진단</h3><p>최근 시험지와 교재에서 정확한 취약 지점을 확인합니다.</p></article><article><b>02</b><h3>개인 진도 설계</h3><p>학교 일정, 목표 성적, 학습 가능 시간을 함께 반영합니다.</p></article><article><b>03</b><h3>이해 중심 수업</h3><p>풀이의 이유를 학생이 자신의 말로 설명하도록 돕습니다.</p></article><article><b>04</b><h3>오답 습관 관리</h3><p>반복되는 실수를 기록하고 다음 학습 계획에 반영합니다.</p></article></div></div></section>
-    <section class="levels" id="levels"><div class="wrap"><div class="section-heading"><div><p class="kicker">02 · SCHOOL LEVEL</p><h2>초등부터 고등까지,<br>단계별 수학 수업</h2></div><p>제주 초등 수학은 기초수학과 공부 습관, 중등 수학은 학교별 수학내신, 고등 수학은 내신과 수능수학의 균형에 집중합니다.</p></div><div class="level-grid">${levelCards}</div></div></section>
+    <section class="levels" id="levels"><div class="wrap"><div class="section-heading"><div><p class="kicker">02 · SCHOOL LEVEL</p><h2>초등부터 고등까지,<br>단계별 수학 수업</h2></div><p>제주 초등 수학은 기초수학과 공부 습관, 중등 수학은 학교별 수학내신, 고등 수학은 내신과 수능수학의 균형에 집중합니다.</p></div><div class="level-grid">${levelCards}</div><nav class="grade-links light" aria-label="학년별 페이지">${gradePages.map(grade => `<a href="${gradePath(grade)}">${grade.key} 수학과외</a>`).join("")}</nav></div></section>
     <section class="grade-section" id="grades"><div class="wrap"><div class="section-heading light"><div><p class="kicker">03 · GRADE TRANSITION</p><h2>새 학년의 시작,<br>연결이 중요합니다</h2></div><p>무리한 선행보다 다음 과정에 필요한 이전 개념을 정확하게 이어 붙이는 일이 먼저입니다.</p></div><div class="grade-grid">${gradeCards}</div></div></section>
     <section class="study-scene"><div class="study-photo"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1400&q=85" alt="수학 공식과 도형이 적힌 학습 공간" loading="lazy"></div><div><p class="kicker">A ROUTINE THAT LASTS</p><h2>수업이 없는 날에도<br>스스로 이어가도록</h2><p>과외 시간에만 풀 수 있는 문제는 오래 남지 않습니다. 문제를 읽고, 조건을 표시하고, 풀이를 검토하는 루틴을 반복해 혼자 수학공부할 때의 기준을 만듭니다.</p><ul><li>학교별 시험 범위와 일정 반영</li><li>매 수업 오답 원인 기록</li><li>개인별 과제량과 복습 주기 조정</li></ul></div></section>
     <section class="areas" id="areas"><div class="wrap"><div class="section-heading"><div><p class="kicker">04 · LOCAL CLASS</p><h2>제주 우리 동네<br>수학과외 찾기</h2></div><p>제주시와 서귀포시, 각 읍·면·동의 지역별 수업 안내를 확인하세요. 가까운 생활권을 기준으로 꾸준히 이어갈 수 있는 학습 계획을 제안합니다.</p></div><div class="city-grid">${cityLinks}</div>${regionGroups}</div></section>
@@ -406,13 +497,50 @@ function homePage() {
   });
 }
 
+function gradePage(grade, index) {
+  const level = levels.find(item => item.key === grade.level);
+  const previous = gradePages[index - 1];
+  const next = gradePages[index + 1];
+  const schoolCount = schools.filter(school => school.level === grade.level).length;
+  const directory = cities.map(city => `<section class="region-group"><div class="region-title"><p>${city.name}</p><span>${regions.filter(region => region.city === city.name).length + 1}개 지역</span></div><div class="region-grid">${[city, ...regions.filter(region => region.city === city.name)].map(area => `<a href="${areaPath(area)}#${level.slug}"><small>${area.type === "시" ? `${area.name} 전 지역` : area.name}</small><strong>${shortName(area)} ${grade.key} 수학과외</strong><span aria-hidden="true">↗</span></a>`).join("")}</div></section>`).join("");
+  const moreLinks = [
+    previous && `<a href="${gradePath(previous)}">← 제주 ${previous.key} 수학과외<span>${previous.headline}</span></a>`,
+    next && `<a href="${gradePath(next)}">제주 ${next.key} 수학과외 →<span>${next.headline}</span></a>`,
+    `<a href="${levelPath(level)}">제주 ${level.key} 수학 전체 안내<span>→</span></a>`,
+    `<a href="/#schools">제주 학교별 수학 내신<span>→</span></a>`
+  ].filter(Boolean).join("");
+  const faqs = [
+    ...grade.faqs,
+    [`제주 ${grade.key} 수학과외는 어디에서 수업하나요?`, "제주시와 서귀포시 각 읍·면·동 안내를 기준으로, 대면 수업 가능 여부와 시간은 세부 위치와 희망 일정에 따라 상담 후 안내합니다."],
+    ["상담은 어떻게 신청하나요?", `${phone}로 전화하시면 학생의 학교, 최근 성적, 목표를 듣고 ${grade.key} 수학 수업 방향을 안내합니다.`]
+  ];
+  const body = `<main id="main" class="local-page">
+    <section class="local-hero"><div class="wrap"><nav class="breadcrumbs" aria-label="현재 위치"><a href="/">제주</a><span>/</span><a href="${levelPath(level)}">${level.key} 수학</a><span>/</span><strong>${grade.key}</strong></nav><p class="eyebrow">JEJU · ${grade.full}</p><h1>제주<br>${grade.key} 수학과외</h1><p>${grade.full} 수학, ${grade.headline}까지 학교 진도와 학생의 속도에 맞춘 1:1 수업.</p></div></section>
+    <section class="local-intro"><div class="wrap section-heading"><div><p class="kicker">CURRICULUM</p><h2>${grade.key} 수학에서<br>배우는 것</h2></div><div><p>${grade.intro}</p><ul class="unit-list">${grade.units.map(unit => `<li>${unit}</li>`).join("")}</ul><p class="unit-note">단원 이름과 순서는 교과서와 학교 편성에 따라 조금씩 다를 수 있어 첫 수업에서 학생의 교과서를 함께 확인합니다.</p></div></div></section>
+    <section class="levels"><div class="wrap"><div class="section-heading compact"><div><p class="kicker">CHECK POINTS</p><h2>${grade.key} 수학에서<br>자주 막히는 지점</h2></div><p>제주 ${grade.key} 학생의 최근 시험지와 교재를 보고 아래 지점부터 확인합니다.</p></div><div class="topic-grid cols-3">${grade.struggles.map(([heading, text], itemIndex) => `<article><b>0${itemIndex + 1}</b><h3>${heading}</h3><p>${text}</p></article>`).join("")}</div></div></section>
+    <section class="intro"><div class="wrap"><div class="section-heading compact"><div><p class="kicker">STUDY PLAN</p><h2>${grade.key} 수학<br>수업 진행 순서</h2></div><p>제주 ${level.key} 학교 ${schoolCount}곳의 진도와 시험 범위를 학교별로 확인해 반영합니다.</p></div><div class="topic-grid">${schoolCopy[grade.level].steps.map(([heading, text], stepIndex) => `<article><b>0${stepIndex + 1}</b><h3>${heading}</h3><p>${text}</p></article>`).join("")}</div></div></section>
+    <section class="areas"><div class="wrap"><div class="section-heading"><div><p class="kicker">LOCAL CLASS</p><h2>지역별<br>${grade.key} 수학과외</h2></div><p>제주시와 서귀포시 각 읍·면·동의 ${level.key} 수학 수업 안내로 바로 이동합니다.</p></div>${directory}</div></section>
+    ${faqSection(`${grade.key} 수학과외<br>자주 묻는 질문`, faqs)}
+    <section class="local-details"><div class="wrap detail-grid"><article><p class="kicker">MORE</p><h2>다른 학년<br>수학 안내</h2></article><article><div class="nearby-links grade-nav">${moreLinks}</div></article></div></section>
+    <section class="local-cta"><div class="wrap"><div><p class="kicker">CONSULTATION</p><h2>제주 ${grade.key} 수학과외 상담</h2></div><a class="button button-citrus" href="${phoneLink}" aria-label="${phone}로 전화 상담">${phone} <span>☎</span></a></div></section>
+  </main>`;
+  return layout({
+    title: `제주 ${grade.key} 수학과외 | ${grade.full} ${grade.headline} 1:1`,
+    description: `제주 ${grade.key} 수학과외. ${grade.full} ${grade.units.slice(0, 4).join("·")} 등 학교 진도와 내신에 맞춘 1:1 맞춤 수학 수업. 제주시·서귀포시 상담 ${phone}`,
+    canonical: `${siteUrl}${gradePath(grade)}`,
+    breadcrumbs: [["제주 수학과외", `${siteUrl}/`], [`제주 ${level.key} 수학`, `${siteUrl}${levelPath(level)}`], [`제주 ${grade.key} 수학과외`, `${siteUrl}${gradePath(grade)}`]],
+    faqs,
+    body
+  });
+}
+
 function levelPage(level) {
   const directory = cities.map(city => `<section class="region-group"><div class="region-title"><p>${city.name}</p><span>${regions.filter(region => region.city === city.name).length + 1}개 지역</span></div><div class="region-grid">${[city, ...regions.filter(region => region.city === city.name)].map(area => `<a href="${areaPath(area)}#${level.slug}"><small>${area.type === "시" ? `${area.name} 전 지역` : area.name}</small><strong>${shortName(area)} ${level.key} 수학</strong><span aria-hidden="true">↗</span></a>`).join("")}</div></section>`).join("");
   const otherLevels = levels.filter(other => other !== level).map(other => `<a href="${levelPath(other)}">제주 ${other.key} 수학과외<span>→</span></a>`).join("");
   const body = `<main id="main" class="local-page">
     <section class="local-hero"><div class="wrap"><nav class="breadcrumbs" aria-label="현재 위치"><a href="/">제주</a><span>/</span><strong>${level.key} 수학</strong></nav><p class="eyebrow">JEJU · ${level.eyebrow}</p><h1>제주<br>${level.key} 수학</h1><p>${level.lead}</p></div></section>
     <section class="intro"><div class="wrap"><div class="section-heading"><div><p class="kicker">LESSON FOCUS</p><h2>제주 ${level.key} 수학과외,<br>이렇게 수업합니다</h2></div><p>${level.summary} 학생마다 막히는 지점이 다르기 때문에 첫 수업에서 최근 시험지와 교재를 함께 보고 수업 순서를 정합니다.</p></div><div class="topic-grid${level.topics.length > 4 ? " cols-3" : ""}">${level.topics.map(([heading, text], index) => `<article><b>0${index + 1}</b><h3>${heading}</h3><p>${text}</p></article>`).join("")}</div></div></section>
-    <section class="grade-section"><div class="wrap"><div class="section-heading light"><div><p class="kicker">BY GRADE</p><h2>학년별<br>${level.key} 수학과외</h2></div><p>같은 학교급 안에서도 학년마다 필요한 개념과 공부 방법이 다릅니다.</p></div><div class="grade-grid cols-2">${level.grades.map(([name, text], index) => `<article class="grade-card"><span>0${index + 1}</span><h3>제주 ${name} 수학과외</h3><p>${text}</p></article>`).join("")}</div></div></section>
+    <section class="grade-section"><div class="wrap"><div class="section-heading light"><div><p class="kicker">BY GRADE</p><h2>학년별<br>${level.key} 수학과외</h2></div><p>같은 학교급 안에서도 학년마다 필요한 개념과 공부 방법이 다릅니다.</p></div><div class="grade-grid cols-2">${level.grades.map(([name, text], index) => `<article class="grade-card"><span>0${index + 1}</span><h3>제주 ${name} 수학과외</h3><p>${text}</p></article>`).join("")}</div><nav class="grade-links" aria-label="학년별 페이지">${gradePages.filter(grade => grade.level === level.key).map(grade => `<a href="${gradePath(grade)}">제주 ${grade.key} 수학과외</a>`).join("")}</nav></div></section>
     <section class="areas"><div class="wrap"><div class="section-heading"><div><p class="kicker">LOCAL CLASS</p><h2>지역별<br>${level.key} 수학 찾기</h2></div><p>제주시와 서귀포시 각 읍·면·동의 ${level.key} 수학 수업 안내로 바로 이동합니다.</p></div>${directory}</div></section>
     <section class="schools"><div class="wrap"><div class="section-heading"><div><p class="kicker">SCHOOLS</p><h2>제주 ${schoolLevels.find(([key]) => key === level.key)[1]}별<br>${level.key} 수학 내신</h2></div><p>제주시와 서귀포시 ${schoolLevels.find(([key]) => key === level.key)[1]} ${schools.filter(school => school.level === level.key).length}곳의 진도와 시험 범위를 학교별로 확인해 수업에 반영합니다.</p></div>${citySchoolBlocks(schools.filter(school => school.level === level.key))}</div></section>
     ${faqSection(`${level.key} 수학<br>자주 묻는 질문`, level.faqs)}
@@ -462,7 +590,7 @@ function areaPage(area, index) {
   const intro = isCity
     ? `${areaName} 수학과외는 읍·면·동별 학교 일정과 학생의 생활권을 함께 고려합니다. 최근 시험지와 교재를 바탕으로 개념 이해, 풀이 순서, 계산 습관 가운데 어디에서 막혔는지 확인합니다.`
     : `${cityName} ${areaName} 수학과외는 최근 시험지와 현재 사용하는 교재를 먼저 살펴봅니다. 정답 개수만 확인하지 않고 개념 이해, 풀이 순서, 계산 습관 중 어디에서 막혔는지 구분해 다음 학습량을 정합니다.${alias ? ` ${alias} 생활권 학생의 학교 일정도 함께 반영합니다.` : ""}`;
-  const levelCards = levels.map(level => `<article class="level-card" id="${level.slug}"><small>${level.eyebrow}</small><h3>${short} ${level.key} 수학</h3><p>${levelCopy[level.slug][index % 3](short, areaName, summary)}</p>${pointList(level)}<p class="grade-tags"><b>${short} 학년별 수학과외</b>${level.gradeTags.join(" · ")}</p><a class="more" href="${levelPath(level)}">제주 ${level.key} 수학 자세히 →</a></article>`).join("");
+  const levelCards = levels.map(level => `<article class="level-card" id="${level.slug}"><small>${level.eyebrow}</small><h3>${short} ${level.key} 수학</h3><p>${levelCopy[level.slug][index % 3](short, areaName, summary)}</p>${pointList(level)}<p class="grade-tags"><b>${short} 학년별 수학과외</b>${gradeTagLinks(level.gradeTags)}</p><a class="more" href="${levelPath(level)}">제주 ${level.key} 수학 자세히 →</a></article>`).join("");
   const faqs = [
     [`${short} 초등 기초수학부터 시작할 수 있나요?`, "네. 최근 단원평가나 문제집을 보고 연산, 분수, 도형 중 어느 부분에서 막히는지 확인한 뒤 기초수학부터 단계적으로 수업합니다."],
     [`${short} 중학생 수학내신 대비는 어떻게 하나요?`, `${areaName} 학생이 다니는 학교의 시험 범위와 서술형 비중을 확인하고, 시험 4주 전부터 교과서·학교 프린트·기출 유형 중심으로 준비합니다.`],
@@ -542,13 +670,17 @@ for (const [index, area] of [...cities, ...regions].entries()) {
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, "index.html"), areaPage(area, index));
 }
+for (const [index, grade] of gradePages.entries()) {
+  await mkdir(path.join(dist, "grades", grade.slug), { recursive: true });
+  await writeFile(path.join(dist, "grades", grade.slug, "index.html"), gradePage(grade, index));
+}
 for (const [index, school] of schools.entries()) {
   const directory = path.join(dist, "schools", schoolSlug(school));
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, "index.html"), schoolPage(school, index));
 }
 
-const priority = url => url === `${siteUrl}/` ? "1.0" : levels.some(level => url.endsWith(levelPath(level))) || cities.some(city => url.endsWith(areaPath(city))) ? "0.9" : url.includes("/schools/") ? "0.6" : "0.7";
+const priority = url => url === `${siteUrl}/` ? "1.0" : levels.some(level => url.endsWith(levelPath(level))) || cities.some(city => url.endsWith(areaPath(city))) ? "0.9" : url.includes("/grades/") ? "0.8" : url.includes("/schools/") ? "0.6" : "0.7";
 await writeFile(path.join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(page => `\n  <url><loc>${page.url}</loc><lastmod>${lastUpdated}</lastmod><changefreq>weekly</changefreq><priority>${priority(page.url)}</priority></url>`).join("")}\n</urlset>\n`);
 const pubDate = new Date(`${lastUpdated}T09:00:00+09:00`).toUTCString();
 await writeFile(path.join(dist, "rss.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>제주 수학과외</title><link>${siteUrl}/</link><description>제주 초등·중등·고등 1:1 수학과외 지역별·학교급별 수업 안내</description><language>ko</language><lastBuildDate>${pubDate}</lastBuildDate>${pages.map(page => `\n  <item><title>${esc(page.title)}</title><link>${page.url}</link><guid>${page.url}</guid><description>${esc(page.description)}</description><pubDate>${pubDate}</pubDate></item>`).join("")}\n</channel></rss>\n`);

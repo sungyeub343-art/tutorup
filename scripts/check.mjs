@@ -16,8 +16,10 @@ const areaFiles = areaDirectories.filter(entry => entry.isDirectory()).map(entry
 const levelFiles = Object.keys(levelKeywords).map(slug => path.join(dist, slug, "index.html"));
 const schools = JSON.parse(await readFile(path.join(root, "src", "schools.json"), "utf8"));
 const schoolFiles = schools.map(school => path.join(dist, "schools", school.name.replace(/\s+/g, "-"), "index.html"));
-const htmlFiles = [path.join(dist, "index.html"), ...levelFiles, ...areaFiles, ...schoolFiles];
-const expectedPages = 49 + schools.length;
+const gradeKeys = ["초1", "초2", "초3", "초4", "초5", "초6", "중1", "중2", "중3", "고1", "고2", "고3"];
+const gradeFiles = ["e1", "e2", "e3", "e4", "e5", "e6", "m1", "m2", "m3", "h1", "h2", "h3"].map(slug => path.join(dist, "grades", slug, "index.html"));
+const htmlFiles = [path.join(dist, "index.html"), ...levelFiles, ...areaFiles, ...gradeFiles, ...schoolFiles];
+const expectedPages = 49 + gradeFiles.length + schools.length;
 
 if (htmlFiles.length !== expectedPages) throw new Error(`Expected ${expectedPages} index pages, found ${htmlFiles.length}`);
 const titles = new Set();
@@ -27,7 +29,8 @@ for (const file of htmlFiles) {
   const name = path.relative(root, file);
   const level = Object.keys(levelKeywords).find(slug => file === path.join(dist, slug, "index.html"));
   const school = schools[schoolFiles.indexOf(file)];
-  const required = school ? ["수학과외", school.name] : level ? ["수학과외", ...levelKeywords[level]] : ["수학과외", ...gradeKeywords, ...allLevelKeywords];
+  const grade = gradeKeys[gradeFiles.indexOf(file)];
+  const required = grade ? ["수학과외", `제주 ${grade} 수학과외`] : school ? ["수학과외", school.name] : level ? ["수학과외", ...levelKeywords[level]] : ["수학과외", ...gradeKeywords, ...allLevelKeywords];
   for (const keyword of required) {
     if (!html.includes(keyword)) throw new Error(`${name} is missing ${keyword}`);
   }
