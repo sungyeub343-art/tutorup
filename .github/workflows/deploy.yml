@@ -43,5 +43,5 @@ jobs:
       - name: Notify search engines (IndexNow)
         continue-on-error: true
         run: |
-          sleep 30
+          sleep 90
           node scripts/indexnow.mjs
