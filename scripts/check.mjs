@@ -52,7 +52,7 @@ for (const file of areaFiles) {
   if (!(await readFile(file, "utf8")).includes('id="schools"')) throw new Error(`${path.relative(root, file)} has no school section`);
 }
 
-for (const file of ["CNAME", "robots.txt", "sitemap.xml", "rss.xml", ".nojekyll", "404.html", "assets/style.css", "favicon.ico", "favicon.svg", "apple-touch-icon.png"]) {
+for (const file of ["CNAME", "1b88ec16b7b8431cce2a51b005615b8f.txt", "robots.txt", "sitemap.xml", "rss.xml", ".nojekyll", "404.html", "assets/style.css", "favicon.ico", "favicon.svg", "apple-touch-icon.png"]) {
   await access(path.join(dist, file));
 }
 const sitemap = await readFile(path.join(dist, "sitemap.xml"), "utf8");

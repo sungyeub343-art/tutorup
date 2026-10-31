@@ -67,7 +67,7 @@ const grades = [
   ["예비고3", "수능 출제 단원별 개념과 기출을 연결하고 제한 시간 안에 점수를 만드는 실전 루틴을 다집니다."]
 ];
 
-const lastUpdated = "2026-10-30";
+const lastUpdated = "2026-10-31";
 const phone = "010-2928-3614";
 const phoneLink = "tel:01029283614";
 const ogImage = "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?auto=format&fit=crop&w=1200&q=85";
@@ -407,7 +407,10 @@ function schoolPage(school, index) {
   });
 }
 
-function layout({ title, description, canonical, body, breadcrumbs = [], faqs = [], noindex = false }) {
+const heroImage = "https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?auto=format&fit=crop&w=1600&q=70";
+const indexNowKey = (await readFile(path.join(root, "src", "indexnow-key.txt"), "utf8")).trim();
+
+function layout({ title, description, canonical, body, breadcrumbs = [], faqs = [], noindex = false, preloadImage }) {
   const graph = [
     {
       "@type": "EducationalOrganization",
@@ -433,7 +436,8 @@ function layout({ title, description, canonical, body, breadcrumbs = [], faqs = 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${title}</title>
   <meta name="description" content="${description}">
-  ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
+  ${noindex ? '<meta name="robots" content="noindex">' : `<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+  <link rel="canonical" href="${canonical}">`}
   <meta name="naver-site-verification" content="044544c41c6aa3979986fd9912b17b85cd82adc5">
   <meta name="google-site-verification" content="WXFdoOwFb2R59oiI-PXgL5uYDhWaYWBE7siZCPZX4oM">
   <meta name="theme-color" content="#183c35">
@@ -452,7 +456,8 @@ function layout({ title, description, canonical, body, breadcrumbs = [], faqs = 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/style.css">${preloadImage ? `
+  <link rel="preload" as="image" href="${preloadImage}" fetchpriority="high">` : ""}
   <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}</script>
 </head>
 <body>
@@ -477,7 +482,7 @@ function homePage() {
     ["상담은 어떻게 하나요?", `${phone}로 전화하시면 학생의 학년, 거주 지역, 최근 성적과 목표를 듣고 필요한 수업 방향을 안내합니다.`]
   ];
   const body = `<main id="main">
-    <section class="hero"><img src="https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?auto=format&fit=crop&w=2000&q=88" alt="제주의 푸른 바다와 해안 풍경"><div class="hero-shade"></div><div class="wrap hero-content"><p class="eyebrow">JEJU · PRIVATE MATH COACHING</p><h1>제주<br>수학과외</h1><p class="hero-copy">답을 외우기 전에 원리를 이해하도록.<br>초등 기초수학부터 중등 수학내신, 고등 수능수학까지 1:1 수학 수업.</p><div class="hero-actions"><a class="button button-citrus" href="#areas">우리 동네 수업 찾기 <span>↓</span></a><a class="button button-ghost" href="${phoneLink}" aria-label="${phone}로 전화 상담">${phone} <span>☎</span></a></div></div><div class="hero-facts">${levels.map(level => `<a href="${levelPath(level)}">${level.key} 수학</a>`).join("")}<span>내신 · 선행 · 수능</span><span>제주 전 지역 상담</span></div></section>
+    <section class="hero"><img src="${heroImage}" alt="돌담과 기와지붕이 이어진 골목 풍경" width="1600" height="900" fetchpriority="high" decoding="async"><div class="hero-shade"></div><div class="wrap hero-content"><p class="eyebrow">JEJU · PRIVATE MATH COACHING</p><h1>제주<br>수학과외</h1><p class="hero-copy">답을 외우기 전에 원리를 이해하도록.<br>초등 기초수학부터 중등 수학내신, 고등 수능수학까지 1:1 수학 수업.</p><div class="hero-actions"><a class="button button-citrus" href="#areas">우리 동네 수업 찾기 <span>↓</span></a><a class="button button-ghost" href="${phoneLink}" aria-label="${phone}로 전화 상담">${phone} <span>☎</span></a></div></div><div class="hero-facts">${levels.map(level => `<a href="${levelPath(level)}">${level.key} 수학</a>`).join("")}<span>내신 · 선행 · 수능</span><span>제주 전 지역 상담</span></div></section>
     <section class="intro" id="method"><div class="wrap"><div class="section-heading"><div><p class="kicker">01 · LESSON METHOD</p><h2>풀이보다 먼저<br>막힌 지점을 찾습니다</h2></div><p>같은 문제를 틀려도 이유는 다릅니다. 개념이 비어 있는지, 조건을 놓쳤는지, 계산 습관이 흔들리는지 먼저 구분한 뒤 학생에게 필요한 수업 순서를 정합니다.</p></div><div class="method-grid"><article><b>01</b><h3>현재 학습 진단</h3><p>최근 시험지와 교재에서 정확한 취약 지점을 확인합니다.</p></article><article><b>02</b><h3>개인 진도 설계</h3><p>학교 일정, 목표 성적, 학습 가능 시간을 함께 반영합니다.</p></article><article><b>03</b><h3>이해 중심 수업</h3><p>풀이의 이유를 학생이 자신의 말로 설명하도록 돕습니다.</p></article><article><b>04</b><h3>오답 습관 관리</h3><p>반복되는 실수를 기록하고 다음 학습 계획에 반영합니다.</p></article></div></div></section>
     <section class="levels" id="levels"><div class="wrap"><div class="section-heading"><div><p class="kicker">02 · SCHOOL LEVEL</p><h2>초등부터 고등까지,<br>단계별 수학 수업</h2></div><p>제주 초등 수학은 기초수학과 공부 습관, 중등 수학은 학교별 수학내신, 고등 수학은 내신과 수능수학의 균형에 집중합니다.</p></div><div class="level-grid">${levelCards}</div><nav class="grade-links light" aria-label="학년별 페이지">${gradePages.map(grade => `<a href="${gradePath(grade)}">${grade.key} 수학과외</a>`).join("")}</nav></div></section>
     <section class="grade-section" id="grades"><div class="wrap"><div class="section-heading light"><div><p class="kicker">03 · GRADE TRANSITION</p><h2>새 학년의 시작,<br>연결이 중요합니다</h2></div><p>무리한 선행보다 다음 과정에 필요한 이전 개념을 정확하게 이어 붙이는 일이 먼저입니다.</p></div><div class="grade-grid">${gradeCards}</div></div></section>
@@ -491,6 +496,7 @@ function homePage() {
     title: "제주 수학과외 | 초등·중등·고등 1:1 수학 내신·수능 대비",
     description: `제주시·서귀포시 초등 기초수학, 중등 수학내신, 고등 수능수학까지 1:1 맞춤 수학과외. 현재 실력을 진단하고 학교 진도에 맞춰 수업합니다. 전화 상담 ${phone}`,
     canonical: `${siteUrl}/`,
+    preloadImage: heroImage,
     breadcrumbs: [["제주 수학과외", `${siteUrl}/`]],
     faqs,
     body
@@ -686,6 +692,7 @@ const pubDate = new Date(`${lastUpdated}T09:00:00+09:00`).toUTCString();
 await writeFile(path.join(dist, "rss.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>제주 수학과외</title><link>${siteUrl}/</link><description>제주 초등·중등·고등 1:1 수학과외 지역별·학교급별 수업 안내</description><language>ko</language><lastBuildDate>${pubDate}</lastBuildDate>${pages.map(page => `\n  <item><title>${esc(page.title)}</title><link>${page.url}</link><guid>${page.url}</guid><description>${esc(page.description)}</description><pubDate>${pubDate}</pubDate></item>`).join("")}\n</channel></rss>\n`);
 await writeFile(path.join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
 await writeFile(path.join(dist, "CNAME"), "tutorup.kr\n");
+await writeFile(path.join(dist, `${indexNowKey}.txt`), `${indexNowKey}\n`);
 await writeFile(path.join(dist, ".nojekyll"), "");
 await writeFile(path.join(dist, "favicon.svg"), faviconSvg);
 await writeFile(path.join(dist, "favicon.ico"), iconIco(32));

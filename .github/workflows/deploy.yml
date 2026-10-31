@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -38,3 +40,8 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Notify search engines (IndexNow)
+        continue-on-error: true
+        run: |
+          sleep 30
+          node scripts/indexnow.mjs
